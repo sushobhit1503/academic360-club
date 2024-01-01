@@ -1,25 +1,32 @@
-import logo from './logo.svg';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
+import React from 'react';
+import Home from './pages/Home';
+import CounselorProfile from './pages/CounselorProfile';
+import Footer from './components/Footer';
+import Toolbar from './components/Toolbar';
+import ContactUs from './pages/ContactUs';
+import Privacy from './pages/Privacy';
+import Refund from "./pages/Refund"
+import Terms from './pages/Terms';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <div className='main-container'>
+        <Toolbar />
+        <Routes>
+          <Route path='/' exact element={<Home />} />
+          <Route path='/counselor-profiles' exact element={<CounselorProfile />} />
+          <Route path='/contact' exact element={<ContactUs />} />
+          <Route path='/privacy' exact element={<Privacy />} />
+          <Route path='/refund' exact element={<Refund />} />
+          <Route path='/terms' exact element={<Terms />} />
+        </Routes>
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default App;
