@@ -14,24 +14,26 @@ class Toolbar extends React.Component {
         }
         return (
             <div>
-                <Navbar expand="md" light fixed >
+                <Navbar className='bg-transparent position-fixed w-100' expand="md" light>
                     <NavbarBrand href="/">Academic 360</NavbarBrand>
                     <NavbarToggler onClick={toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="me-auto" navbar>
-                            <NavItem>
-                                <NavLink href="/">Home</NavLink>
+                            <NavItem className='menu-item'>
+                                <NavLink className='text-primary' href="/">Home</NavLink>
                             </NavItem>
-                            <NavItem>
-                                <NavLink href="/counselor-profiles">
+                            <NavItem className='menu-item'>
+                                <NavLink className='text-primary' href="/counselor-profiles">
                                     Counselor Profiles
                                 </NavLink>
                             </NavItem>
                         </Nav>
                         <NavbarText>
-                            <Button className='button-login bg-primary'>
-                                Login
-                            </Button>
+                            <a href='/login'>
+                                <Button className='button-login bg-primary'>
+                                    Login
+                                </Button>
+                            </a>
                         </NavbarText>
                     </Collapse>
                 </Navbar>

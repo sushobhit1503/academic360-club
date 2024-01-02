@@ -9,6 +9,7 @@ import ContactUs from './pages/ContactUs';
 import Privacy from './pages/Privacy';
 import Refund from "./pages/Refund"
 import Terms from './pages/Terms';
+import Login from './pages/Login';
 
 class App extends React.Component {
   render() {
@@ -22,6 +23,7 @@ class App extends React.Component {
           <Route path='/privacy' exact element={<Privacy />} />
           <Route path='/refund' exact element={<Refund />} />
           <Route path='/terms' exact element={<Terms />} />
+          <Route path='/login' exact element={<Login />} />
         </Routes>
         <Footer />
       </div>
