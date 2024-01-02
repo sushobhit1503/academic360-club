@@ -24,6 +24,7 @@ class Users extends React.Component {
             const { name, value } = e.target
             this.setState({ [name]: value })
         }
+        const filteredArray = this.state.allUsers.filter(user => user.name.toLowerCase().includes(this.state.searchedUser.toLowerCase()))
         return (
             <div className="px-xl-5 px-3 py-3">
                 <div className="h1 mb-3">User Directory</div>
@@ -49,7 +50,7 @@ class Users extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.allUsers.map(eachUser => {
+                            {filteredArray.map(eachUser => {
                                 return (
                                     <tr key={eachUser.id}>
                                         <th scope="row">
@@ -61,9 +62,11 @@ class Users extends React.Component {
                                         <td>
                                             {eachUser.email}
                                         </td>
-                                        <td>
-                                            {eachUser.}
-                                        </td>
+                                        {/* <td>
+                                            <Button color="primary">
+                                                View Details
+                                            </Button>
+                                        </td> */}
                                     </tr>
                                 )
                             })}
@@ -71,22 +74,26 @@ class Users extends React.Component {
                     </Table>
                 </div>
                 <div className="d-block d-md-none">
-                    <Card>
-                        <CardBody>
-                            <div className="h3 mb-3">Sushobhit Srivastava</div>
-                            <div className="mb-3">
-                                <Label className="mb-0">Phone Number</Label>
-                                <div className="fw-bold">1234567890</div>
-                            </div>
-                            <div className="mb-3">
-                                <Label className="mb-0">Email Id</Label>
-                                <div className="fw-bold">sushobhitsrivastava2017@gmail.com</div>
-                            </div>
-                            {/* <Button className="w-100" color="primary">
+                    {filteredArray.map(eachUser => {
+                        return (
+                            <Card className="mb-3">
+                                <CardBody>
+                                    <div className="h3 mb-3">{eachUser.name}</div>
+                                    <div className="mb-3">
+                                        <Label className="mb-0">Phone Number</Label>
+                                        <div className="fw-bold">{eachUser.phoneNumber}</div>
+                                    </div>
+                                    <div className="mb-3">
+                                        <Label className="mb-0">Email Id</Label>
+                                        <div className="fw-bold">{eachUser.email}</div>
+                                    </div>
+                                    {/* <Button className="w-100" color="primary">
                                 View Details
                             </Button> */}
-                        </CardBody>
-                    </Card>
+                                </CardBody>
+                            </Card>
+                        )
+                    })}
                 </div>
             </div>
         )
