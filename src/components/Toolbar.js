@@ -29,7 +29,7 @@ class Toolbar extends React.Component {
                             </NavItem>
                         </Nav>
                         <NavbarText>
-                            <Button>
+                            <Button className='button-login bg-primary'>
                                 Login
                             </Button>
                         </NavbarText>

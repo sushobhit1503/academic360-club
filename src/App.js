@@ -13,7 +13,7 @@ import Terms from './pages/Terms';
 class App extends React.Component {
   render() {
     return (
-      <div className='main-container'>
+      <div>
         <Toolbar />
         <Routes>
           <Route path='/' exact element={<Home />} />

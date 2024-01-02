@@ -6,43 +6,43 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                <div className="h1 mb-0 text-center">
+                <div className="h1 mt-md-5 mt-3 mb-0 text-center text-secondary">
                     ACADEMIC 360
                 </div>
-                <div className="h4 mb-5 text-center">
+                <div className="h4 mb-5 text-center text-secondary">
                     Your Gateway to Informed Education Abroad
                 </div>
-                <div className="text-center mb-3">
-                    <img src={LandingPageImage} alt="academic" />
+                <div className="text-center mb-5 main-container">
+                    <img src={LandingPageImage} alt="academic" className="img-fluid" />
                 </div>
-                <div className="row row-cols-1 row-cols-md-2 g-3 mb-5">
+                <div className="row row-cols-1 row-cols-md-2 g-3 mb-5 main-container">
                     <div className="col">
-                        <div className="h2 mb-5">
+                        <div className="h2 mb-3">
                             Who We Are
                         </div>
-                        <div className="h5 mb-3">
+                        <div className="h5 mb-2">
                             Welcome to Academic 360: Your Gateway to Informed Education Abroad
                         </div>
-                        <div className="mb-3">
+                        <div className="mb-5">
                             At Academic 360, we understand that the journey to studying abroad can be both exciting and challenging.
                             Navigating through various options, understanding admission processes,
                             and addressing specific queries can sometimes be overwhelming.
                             That's why we've crafted a platform that serves as your companion on this educational adventure.
                         </div>
-                        <div className="h5 mb-3">
+                        <div className="h5 mb-2">
                             1 on 1 Sessions: Your Personalized Guidance
                         </div>
-                        <div className="mb-3">
+                        <div className="mb-5">
                             One of our unique offerings is the opportunity for students to engage in personalized 1 on 1
                             sessions with consultants. These sessions are designed to address your specific concerns, clear doubts,
                             and provide insights tailored to your educational goals. Our consultants include seasoned professionals
                             in the field as well as current students who have firsthand experience in the very universities you aspire
                             to join.
                         </div>
-                        <div className="h5 mb-3">
+                        <div className="h5 mb-2">
                             External Consultants and Student Ambassadors: A Diverse Pool of Expertise
                         </div>
-                        <div className="mb-3">
+                        <div className="mb-5">
                             Our team of consultants comprises not only external experts well-versed in the intricacies
                             of international education but also passionate student ambassadors currently enrolled in
                             universities worldwide. This diverse pool of expertise ensures that you receive a well-rounded perspective,
@@ -53,9 +53,9 @@ class Home extends React.Component {
 
                     </div>
                 </div>
-                <div className="text-center bg-primary mb-5">
-                    <div className="h2 mb-3">Our Services</div>
-                    <div>
+                <div className="text-center bg-primary mb-5 p-3 p-md-5">
+                    <div className="h2 mb-3 text-primary">Our Services</div>
+                    <div className="text-primary px-3 text-start">
                         Welcome to Academic 360, your go-to platform for seamless international education guidance.
                         Explore diverse consultant profiles, from seasoned professionals to student ambassadors.
                         Our advanced matching ensures personalized connections for your unique needs, be it applications,
@@ -66,13 +66,13 @@ class Home extends React.Component {
                     </div>
                 </div>
                 <div className="text-center mb-5">
-                    <div className="h2 mb-3">Why Choose us?</div>
-                    <div className="row row-cols-1 row-cols-md-3 g-3">
+                    <div className="h2 mb-3 text-secondary">Why Choose us?</div>
+                    <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3 px-3">
                         <div className="col">
-                            <Card>
+                            <Card className="h-100">
                                 <CardBody>
-                                    <div className="h4 mb-3">Holistic Guidance for Your Journey</div>
-                                    <div>
+                                    <div className="h5 mb-2 text-start">Holistic Guidance for Your Journey</div>
+                                    <div className="text-start">
                                         At Academic 360, we recognize that studying abroad is a comprehensive experience that goes
                                         beyond academic pursuits. Our guidance is tailored to address the entirety of your educational
                                         journey. We not only provide assistance with application strategies and academic concerns but
@@ -83,10 +83,10 @@ class Home extends React.Component {
                             </Card>
                         </div>
                         <div className="col">
-                            <Card>
+                            <Card className="h-100">
                                 <CardBody>
-                                    <div className="h4 mb-3">Community Connection for Support</div>
-                                    <div>
+                                    <div className="h5 mb-2 text-start">Community Connection for Support</div>
+                                    <div className="text-start">
                                         Beyond the consultancy sessions, Academic 360 offers you a community of individuals who
                                         share your passion for studying abroad. This community includes not only
                                         consultants but also fellow students embarking on similar journeys.
@@ -100,10 +100,10 @@ class Home extends React.Component {
                             </Card>
                         </div>
                         <div className="col">
-                            <Card>
+                            <Card className="h-100">
                                 <CardBody>
-                                    <div className="h4 mb-3">Diverse Perspectives, Personalized Solutions</div>
-                                    <div>
+                                    <div className="h5 mb-2 text-start">Diverse Perspectives, Personalized Solutions</div>
+                                    <div className="text-start">
                                         Our team brings together a diverse group of consultants, including seasoned
                                         professionals in the field of international education and enthusiastic student
                                         ambassadors currently thriving in universities around the world. This diversity
@@ -123,9 +123,9 @@ class Home extends React.Component {
                     <div className="col">
                         <img />
                     </div>
-                    <div className="col">
-                        <div className="h2 mb-3">Our Mission</div>
-                        <div>
+                    <div className="col py-5">
+                        <div className="h2 mb-3 text-primary px-3 px-md-5">Our Mission</div>
+                        <div className="text-primary px-3 px-md-5">
                             Academic 360 is more than just an educational consultancy firm.
                             We are a community of knowledge seekers and experts dedicated to fostering meaningful
                             connections. Our mission is to bridge the gap between students aspiring to pursue education
@@ -133,7 +133,7 @@ class Home extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="row row-cols-1 row-cols-md-2 g-3 mb-5">
+                <div className="row row-cols-1 row-cols-md-2 g-3 mb-5 px-md-5 px-3">
                     <div className="col">
                         <div className="h2 mb-3">Contact Us</div>
                         <div className="mb-3">
@@ -148,7 +148,7 @@ class Home extends React.Component {
                             <Label>Message</Label>
                             <Input placeholder="Enter your message" />
                         </div>
-                        <Button>
+                        <Button className="bg-primary button-submit">
                             Submit
                         </Button>
                     </div>
