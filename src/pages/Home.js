@@ -1,6 +1,7 @@
 import React from "react";
 import { firestore } from "../config";
 import { Card, CardBody } from "reactstrap";
+import axios from "axios";
 
 class Home extends React.Component {
     constructor() {
@@ -13,19 +14,28 @@ class Home extends React.Component {
     }
     componentDidMount() {
         firestore.collection("users").get().then(Snapshot => {
-            this.setState ({totalUsers: Snapshot.size})
+            this.setState({ totalUsers: Snapshot.size })
         }).catch(err => console.log(err.message))
         firestore.collection("sessions").get().then(Snapshot => {
-            this.setState ({totalSessions: Snapshot.size})
+            this.setState({ totalSessions: Snapshot.size })
         }).catch(err => console.log(err.message))
         firestore.collection("counselors").get().then(Snapshot => {
-            this.setState ({totalCounselors: Snapshot.size})
+            this.setState({ totalCounselors: Snapshot.size })
         }).catch(err => console.log(err.message))
+        
     }
     render() {
         return (
             <div className="px-xl-5 px-3 py-3">
-                <div className="row row-cols-1 row-cols-md-3 g-3">
+                <div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
+                    <div className="col">
+                        <Card>
+                            <CardBody className="text-center">
+                                <div className="h1"></div>
+                                <div className="h4">Total Website Visits</div>
+                            </CardBody>
+                        </Card>
+                    </div>
                     <div className="col">
                         <Card>
                             <CardBody className="text-center">

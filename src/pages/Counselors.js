@@ -24,7 +24,7 @@ class Counselors extends React.Component {
         }
     }
     componentDidMount() {
-        firestore.collection("counselors").get().then(Snapshot => {
+        firestore.collection("counselors").orderBy("profileViews", "desc").get().then(Snapshot => {
             let temp = []
             Snapshot.forEach(document => {
                 let obj = {
@@ -69,6 +69,7 @@ class Counselors extends React.Component {
                 profileUrl: profileUrl,
                 isDisabled: false,
                 introduction: introduction,
+                profileViews: 0,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => window.location.reload())
                 .catch(err => console.log(err.message))
@@ -89,7 +90,6 @@ class Counselors extends React.Component {
                         description: description,
                         linkedin: linkedin,
                         profileUrl: profileUrl,
-                        isDisabled: false,
                         introduction: introduction
                     }).then(() => window.location.reload())
                         .catch(err => console.log(err.message))
@@ -131,6 +131,9 @@ class Counselors extends React.Component {
                                     Email Id
                                 </th>
                                 <th>
+                                    Profile Views
+                                </th>
+                                <th>
                                     Profile Access
                                 </th>
                             </tr>
@@ -147,6 +150,9 @@ class Counselors extends React.Component {
                                         </td>
                                         <td>
                                             {eachUser.data.email}
+                                        </td>
+                                        <td>
+                                            {eachUser.data.profileViews}
                                         </td>
                                         <td className="d-flex gap-3">
                                             <Button onClick={() => editCounselor(eachUser.id)} color="primary">
@@ -170,7 +176,10 @@ class Counselors extends React.Component {
                         return (
                             <Card className="mb-3" key={eachUser.id}>
                                 <CardBody>
-                                    <div className="h3 mb-3">{eachUser.data.name}</div>
+                                    <div className="d-flex justify-content-between gap-3 mb-3">
+                                        <div className="h3">{eachUser.data.name}</div>
+                                        <div>{eachUser.data.profileViews} profile views</div>
+                                    </div>
                                     <div className="mb-3">
                                         <Label className="mb-0">Phone Number</Label>
                                         <div className="fw-bold">{eachUser.data.phoneNumber}</div>
@@ -232,11 +241,15 @@ class Counselors extends React.Component {
                         </div>
                         <div className="mb-3">
                             <Label>Description</Label>
-                            <Input placeholder="Enter counselor description" onChange={onChange} value={this.state.description} name="description" />
+                            <textarea rows={10} name="description" placeholder="Enter counselor description" onChange={onChange} value={this.state.description} className="form-control">
+
+                            </textarea>
                         </div>
                         <div className="mb-3">
                             <Label>Introduction</Label>
-                            <Input placeholder="Enter counselor introduction" onChange={onChange} value={this.state.introduction} name="introduction" />
+                            <textarea className="form-control" rows={10} placeholder="Enter counselor introduction" onChange={onChange} value={this.state.introduction} name="introduction">
+
+                            </textarea>
                         </div>
                     </ModalBody>
                     <ModalFooter>
@@ -282,11 +295,15 @@ class Counselors extends React.Component {
                         </div>
                         <div className="mb-3">
                             <Label>Description</Label>
-                            <Input placeholder="Enter counselor description" onChange={onChange} value={this.state.description} name="description" />
+                            <textarea rows={10} name="description" placeholder="Enter counselor description" onChange={onChange} value={this.state.description} className="form-control">
+
+                            </textarea>
                         </div>
                         <div className="mb-3">
                             <Label>Introduction</Label>
-                            <Input placeholder="Enter counselor introduction" onChange={onChange} value={this.state.introduction} name="introduction" />
+                            <textarea className="form-control" rows={10} placeholder="Enter counselor introduction" onChange={onChange} value={this.state.introduction} name="introduction">
+
+                            </textarea>
                         </div>
                     </ModalBody>
                     <ModalFooter>
