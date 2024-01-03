@@ -1,5 +1,5 @@
 import React from "react";
-import { firestore } from "../config";
+import { firestore, storage } from "../config";
 import firebase from "../config";
 import { CardBody, Input, Table, Card, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
@@ -18,6 +18,7 @@ class Counselors extends React.Component {
             description: "",
             linkedin: "",
             introduction: "",
+            profilePicture: "",
             id: "",
             isDetails: false
         }
@@ -40,13 +41,23 @@ class Counselors extends React.Component {
             const { name, value } = e.target
             this.setState({ [name]: value })
         }
+        const fileChange = (event) => {
+            this.setState({ profilePicture: event.target.files[0] })
+        }
         const editCounselor = (id) => {
             const counselor = this.state.allCounselors.find(x => x.id === id)
             let { name, phoneNumber, email, location, description, degree, introduction, linkedin } = counselor.data
             this.setState({ name, phoneNumber, email, location, description, degree, introduction, linkedin, id, isDetails: true })
         }
         const submitProfile = () => {
-            const { name, email, phoneNumber, description, introduction, location, linkedin, degree } = this.state
+            const { name, email, phoneNumber, description, introduction, location, linkedin, degree, profilePicture } = this.state
+            let profileUrl = ""
+            storage.ref(`/images/${profilePicture.name}`).put(profilePicture).on("state_changed", () => {
+            }, null, () => {
+                storage.ref("images").child(profilePicture.name).getDownloadURL().then(url => {
+                    profileUrl = url
+                }).catch(err => console.log(err.message))
+            })
             firestore.collection("counselors").doc().set({
                 name: name,
                 email: email,
@@ -55,6 +66,7 @@ class Counselors extends React.Component {
                 degree: degree,
                 description: description,
                 linkedin: linkedin,
+                profileUrl: profileUrl,
                 isDisabled: false,
                 introduction: introduction,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -62,19 +74,27 @@ class Counselors extends React.Component {
                 .catch(err => console.log(err.message))
         }
         const editProfile = () => {
-            const { name, email, phoneNumber, description, introduction, location, linkedin, degree, id } = this.state
-            firestore.collection("counselors").doc(id).update({
-                name: name,
-                email: email,
-                phoneNumber: phoneNumber,
-                location: location,
-                degree: degree,
-                description: description,
-                linkedin: linkedin,
-                isDisabled: false,
-                introduction: introduction
-            }).then(() => window.location.reload())
-                .catch(err => console.log(err.message))
+            const { name, email, phoneNumber, description, introduction, location, linkedin, degree, id, profilePicture } = this.state
+            let profileUrl = ""
+            storage.ref(`/images/${profilePicture.name}`).put(profilePicture).on("state_changed", () => {
+            }, null, () => {
+                storage.ref("images").child(profilePicture.name).getDownloadURL().then(url => {
+                    profileUrl = url
+                    firestore.collection("counselors").doc(id).update({
+                        name: name,
+                        email: email,
+                        phoneNumber: phoneNumber,
+                        location: location,
+                        degree: degree,
+                        description: description,
+                        linkedin: linkedin,
+                        profileUrl: profileUrl,
+                        isDisabled: false,
+                        introduction: introduction
+                    }).then(() => window.location.reload())
+                        .catch(err => console.log(err.message))
+                }).catch(err => console.log(err.message))
+            })
         }
         const changeVisibility = (id, visibility) => {
             firestore.collection("counselors").doc(id).update({
@@ -84,7 +104,7 @@ class Counselors extends React.Component {
         }
         const filteredArray = this.state.allCounselors.filter(user => user.data.name.toLowerCase().includes(this.state.searchedCounselor.toLowerCase()))
         return (
-            <div className="px-xl-5 px-3 py-3">
+            <div className="px-xl-5 px-3 py-3" >
                 <div className="h1 mb-3">Counselor Directory</div>
                 <div className="d-flex justify-content-between gap-3">
                     <div className="col-xl-4 col-12 mb-3">
@@ -207,6 +227,10 @@ class Counselors extends React.Component {
                             <Input placeholder="Enter counselor linkedin id" onChange={onChange} value={this.state.linkedin} name="linkedin" />
                         </div>
                         <div className="mb-3">
+                            <Label>Profile Picture</Label>
+                            <Input id="fileInput" onChange={fileChange} name="profilePicture" type="file" />
+                        </div>
+                        <div className="mb-3">
                             <Label>Description</Label>
                             <Input placeholder="Enter counselor description" onChange={onChange} value={this.state.description} name="description" />
                         </div>
@@ -251,6 +275,10 @@ class Counselors extends React.Component {
                         <div className="mb-3">
                             <Label>Linkedin</Label>
                             <Input placeholder="Enter counselor linkedin id" onChange={onChange} value={this.state.linkedin} name="linkedin" />
+                        </div>
+                        <div className="mb-3">
+                            <Label>Profile Picture</Label>
+                            <Input id="fileInput" onChange={fileChange} name="profilePicture" type="file" />
                         </div>
                         <div className="mb-3">
                             <Label>Description</Label>
