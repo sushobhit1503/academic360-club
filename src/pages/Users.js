@@ -28,7 +28,7 @@ class Users extends React.Component {
         return (
             <div className="px-xl-5 px-3 py-3">
                 <div className="h1 mb-3">User Directory</div>
-                <div className="col-xl-6 col-12 mb-3">
+                <div className="col-xl-4 col-12 mb-3">
                     <Input onChange={onChange} value={this.state.searchedUser} name="searchedUser" placeholder="Search for any user" type="search" />
                 </div>
                 <div className="d-none d-md-block">
