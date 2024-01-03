@@ -108,7 +108,7 @@ class Counselors extends React.Component {
                 <div className="h1 mb-3">Counselor Directory</div>
                 <div className="d-flex justify-content-between gap-3">
                     <div className="col-xl-4 col-12 mb-3">
-                        <Input onChange={onChange} value={this.state.searchedUser} name="searchedUser" placeholder="Search for any user" type="search" />
+                        <Input onChange={onChange} value={this.state.searchedUser} name="searchedUser" placeholder="Search for any counselor" type="search" />
                     </div>
                     <div>
                         <Button onClick={() => this.setState({ isModal: true })} color="success">

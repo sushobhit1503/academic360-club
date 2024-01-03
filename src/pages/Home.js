@@ -1,7 +1,6 @@
 import React from "react";
 import { firestore } from "../config";
 import { Card, CardBody } from "reactstrap";
-import axios from "axios";
 
 class Home extends React.Component {
     constructor() {
