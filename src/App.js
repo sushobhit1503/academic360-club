@@ -10,6 +10,7 @@ import Privacy from './pages/Privacy';
 import Refund from "./pages/Refund"
 import Terms from './pages/Terms';
 import Login from './pages/Login';
+import CounselorIntro from './pages/CounselorIntro';
 
 class App extends React.Component {
   render() {
@@ -19,6 +20,7 @@ class App extends React.Component {
         <Routes>
           <Route path='/' exact element={<Home />} />
           <Route path='/counselor-profiles' exact element={<CounselorProfile />} />
+          <Route path='/counselor/:id' exact element={<CounselorIntro />} />
           <Route path='/contact' exact element={<ContactUs />} />
           <Route path='/privacy' exact element={<Privacy />} />
           <Route path='/refund' exact element={<Refund />} />

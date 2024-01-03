@@ -1,27 +1,34 @@
 import React from "react"
 import { Badge, CardBody, Card, Button } from "reactstrap"
-import Arpit from "../assets/Arpit.avif"
+import { firestore } from "../config"
 
 class Counselor extends React.Component {
     render() {
+        const viewProfile = () => {
+            firestore.collection("counselors").doc(this.props.id).update ({
+                profileViews: this.props.profileViews + 1 
+            }).then (() => {
+                window.location.href = `counselor/${this.props.id}`
+            }).catch (err => console.log(err.message))
+        }
         return (
             <div>
                 <Card>
                     <CardBody className="text-center">
-                        <img src={Arpit} className="mb-3 counselor-picture" />
-                        <div className="h5">Arrpiit Bissaria</div>
+                        <img src={this.props.profilePicture} className="mb-3 counselor-picture" />
+                        <div className="h5">{this.props.name}</div>
                         <div className="d-flex gap-3 justify-content-center">
                             <Badge color="warning">
-                                Australia
+                                {this.props.location}
                             </Badge>
                             <Badge color="success">
-                                Bachelors
+                                {this.props.degree}
                             </Badge>
                         </div>
                         <div className="my-3">
-                            Masters degree at the University of Queensland, Australia. Studied Mechanical Engineering at BITS Pilani
+                            {this.props.description}
                         </div>
-                        <Button className="bg-primary">
+                        <Button onClick={viewProfile} className="bg-primary">
                             View Profile
                         </Button>
                     </CardBody>

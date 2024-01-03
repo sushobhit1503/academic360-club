@@ -9,6 +9,17 @@
     align-items: center;
 }
 
+.login-background {
+    background-image: url("./assets/login-page.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .bg-primary {
     background-color: var(--blue)!important;
 }
