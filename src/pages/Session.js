@@ -57,7 +57,7 @@ class Session extends React.Component {
         }
         const enterSession = (id) => {
             const session = this.state.allSessions.find(x => x.id === id)
-            let { name, organiser, discountedPrice, actualPrice, time} = session.data
+            let { name, organiser, discountedPrice, actualPrice, time } = session.data
             this.setState({ name, organiser, discountedPrice, actualPrice, time, id, isDetails: true })
         }
         const editSession = () => {
@@ -102,6 +102,9 @@ class Session extends React.Component {
                                     Organiser
                                 </th>
                                 <th>
+                                    Actual Price
+                                </th>
+                                <th>
                                     Discounted Price
                                 </th>
                                 <th>
@@ -121,6 +124,9 @@ class Session extends React.Component {
                                         </th>
                                         <td>
                                             {this.state.allCounselors.find(x => x.id === eachUser.data.organiser).data.name}
+                                        </td>
+                                        <td>
+                                            {eachUser.data.actualPrice}
                                         </td>
                                         <td>
                                             {eachUser.data.discountedPrice}
@@ -158,9 +164,15 @@ class Session extends React.Component {
                                         <Label className="mb-0">Organiser</Label>
                                         <div className="fw-bold">{this.state.allCounselors.find(x => x.id === eachUser.data.organiser).data.name}</div>
                                     </div>
-                                    <div className="mb-3">
-                                        <Label className="mb-0">Discounted Price</Label>
-                                        <div className="fw-bold">Rs. {eachUser.data.discountedPrice}</div>
+                                    <div className="d-flex justify-content-between gap-3 mb-3">
+                                        <div>
+                                            <Label className="mb-0">Actual Price</Label>
+                                            <div className="fw-bold">Rs. {eachUser.data.actualPrice}</div>
+                                        </div>
+                                        <div>
+                                            <Label className="mb-0">Discounted Price</Label>
+                                            <div className="fw-bold">Rs. {eachUser.data.discountedPrice}</div>
+                                        </div>
                                     </div>
                                     <div className="d-flex justify-content-between gap-3">
                                         <Button className="w-50" onClick={() => enterSession(eachUser.id)} color="primary">
@@ -217,7 +229,7 @@ class Session extends React.Component {
                 <Modal isOpen={this.state.isDetails} toggle={() => this.setState({ isDetails: false })}>
                     <ModalHeader toggle={() => this.setState({ isDetails: false })}>Edit Counselor Profile</ModalHeader>
                     <ModalBody>
-                    <div className="mb-3">
+                        <div className="mb-3">
                             <Label>Session Name</Label>
                             <Input placeholder="Enter session name" onChange={onChange} value={this.state.name} name="name" />
                         </div>
