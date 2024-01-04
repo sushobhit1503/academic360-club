@@ -14,7 +14,8 @@ class Login extends React.Component {
             otp: "",
             email: "",
             isLoading: false,
-            result: ""
+            result: "",
+            error: ""
         }
     }
     render() {
@@ -25,18 +26,21 @@ class Login extends React.Component {
 
         const changePageState = () => {
             if (this.state.pageState === "login")
-                this.setState({ pageState: "register" })
+                this.setState({ pageState: "register", error: "" })
             else
-                this.setState({ pageState: "login" })
+                this.setState({ pageState: "login", error: "" })
         }
 
         const checkUserExist = () => {
             const { phoneNumber, pageState } = this.state
-            firestore.collection("users").where("phoneNumber", "==", parseInt(phoneNumber)).get().then(result => {
-                if (pageState === "register" && result.docs.length !== 0)
-                    console.log("User DNE")
-                else if (pageState === "login" && result.docs.length === 0)
-                    console.log("User already exists")
+            firestore.collection("users").where("phoneNumber", "==", phoneNumber).get().then(result => {
+                console.log(result);
+                if (pageState === "register" && result.docs.length !== 0) {
+                    this.setState({ error: "User already exist. Please login" })
+                }
+                else if (pageState === "login" && result.docs.length === 0) {
+                    this.setState({ error: "User does not exist. Please register" })
+                }
                 else {
                     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
                         "size": "invisible",
@@ -56,16 +60,17 @@ class Login extends React.Component {
         const loginSubmit = () => {
             this.state.result.confirm(this.state.otp).then(result => {
                 localStorage.setItem("uid", result.user.uid)
+                window.location.reload()
             }).catch(err => console.log(err.message))
         }
 
         const registerSubmit = () => {
-            const {name, email, phoneNumber} = this.state
+            const { name, email, phoneNumber } = this.state
             this.state.result.confirm(this.state.otp).then(result => {
                 firestore.collection("users").doc(result.user.uid).set({
                     name, email, phoneNumber, createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     id: result.user.uid
-                }).then (() => {
+                }).then(() => {
                     localStorage.setItem("uid", result.user.uid)
                     window.location.reload()
                 }).catch(err => console.log(err.message))
@@ -106,6 +111,7 @@ class Login extends React.Component {
                                         <Button onClick={loginSubmit} className="button-submit bg-primary">
                                             Login
                                         </Button>}
+                                    <div className="my-3">{this.state.error}</div>
                                     <div className="text-center">Don't have an account? <a onClick={changePageState} className="text-decoration-underline cursor">Click Here</a></div>
                                 </div>}
                             {this.state.pageState === "register" &&
@@ -146,6 +152,7 @@ class Login extends React.Component {
                                         <Button onClick={registerSubmit} className="button-submit bg-primary">
                                             Register
                                         </Button>}
+                                    <div className="my-3">{this.state.error}</div>
                                     <div className="text-center">Already a user? <a onClick={changePageState} className="text-decoration-underline cursor">Click Here</a></div>
                                 </div>}
                         </CardBody>
