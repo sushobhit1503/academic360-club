@@ -11,6 +11,7 @@ import Refund from "./pages/Refund"
 import Terms from './pages/Terms';
 import Login from './pages/Login';
 import CounselorIntro from './pages/CounselorIntro';
+import Appointment from './pages/Appointment';
 
 class App extends React.Component {
   render() {
@@ -21,6 +22,7 @@ class App extends React.Component {
           <Route path='/' exact element={<Home />} />
           <Route path='/counselor-profiles' exact element={<CounselorProfile />} />
           <Route path='/counselor/:id' exact element={<CounselorIntro />} />
+          <Route path='/session/:sessionId' exact element={<Appointment />} />
           <Route path='/contact' exact element={<ContactUs />} />
           <Route path='/privacy' exact element={<Privacy />} />
           <Route path='/refund' exact element={<Refund />} />
