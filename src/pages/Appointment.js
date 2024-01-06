@@ -66,6 +66,8 @@ class Appointment extends React.Component {
                 //   callback_url: "https://academics360.club/",
                 handler: function async(response) {
                     console.log(response.razorpay_payment_id);
+                    // Create firebase database to store the payment success query
+                    // Redirect to the confirmation page
                 },
                 prefill: {
                     name: this.state.userDetails.name,
