@@ -1,5 +1,6 @@
 import React from "react";
 import { firestore } from "../config";
+import firebase from "../config";
 import { ScheduleMeeting } from 'react-schedule-meeting';
 import withRouter from "../components/withRouter"
 import { Button } from "reactstrap";
@@ -17,6 +18,7 @@ class Appointment extends React.Component {
         super()
         this.state = {
             sessionDetails: {},
+            sessionId: "",
             allTimeSlots: [],
             bookedTimeSlots: [],
             availableTimeSlots: [],
@@ -29,7 +31,7 @@ class Appointment extends React.Component {
             this.setState({ userDetails: document.data() })
         })
         firestore.collection("sessions").doc(this.props.params.sessionId).get().then(document => {
-            this.setState({ sessionDetails: document.data() }, () => {
+            this.setState({ sessionDetails: document.data(), sessionId: this.props.params.sessionId }, () => {
                 firestore.collection("timeslots").where("organiser", "==", this.state.sessionDetails.organiser).get().then(Snapshot => {
                     let temp = []
                     Snapshot.forEach(document => {
@@ -39,8 +41,8 @@ class Appointment extends React.Component {
                         const availableTimeSlots = this.state.allTimeSlots.map((eachSlot) => {
                             return {
                                 id: eachSlot.createdAt,
-                                startTime: new Date(new Date(new Date().setDate(parseInt(eachSlot.date.substring(8, 9)))).setHours(parseInt(eachSlot.startTime.substring(0, 1)), parseInt(eachSlot.startTime.substring(3, 4)), 0, 0)),
-                                endTime: new Date(new Date(new Date().setDate(parseInt(eachSlot.date.substring(8, 9)))).setHours(parseInt(eachSlot.endTime.substring(0, 1)), parseInt(eachSlot.endTime.substring(3, 4)), 0, 0)),
+                                startTime: new Date(new Date(new Date().setDate(parseInt(eachSlot.date.substring(9)))).setHours(parseInt(eachSlot.startTime.substring(1)), parseInt(eachSlot.startTime.substring(4)), 0, 0)),
+                                endTime: new Date(new Date(new Date().setDate(parseInt(eachSlot.date.substring(9)))).setHours(parseInt(eachSlot.endTime.substring(1)), parseInt(eachSlot.endTime.substring(4)), 0, 0)),
                             };
                         });
                         this.setState({ availableTimeSlots })
@@ -56,6 +58,8 @@ class Appointment extends React.Component {
                 "https://checkout.razorpay.com/v1/checkout.js"
             );
             if (!res) return;
+            localStorage.setItem("sessionId", this.props.params.sessionId)
+            localStorage.setItem("selectedDate", JSON.stringify(this.state.selectedDate.startTime))
             const options = {
                 key: "rzp_test_RzYQGECWiji4Ln", // change when making live
                 currency: "INR",
@@ -65,8 +69,17 @@ class Appointment extends React.Component {
                 image: "", // put image url here
                 //   callback_url: "https://academics360.club/",
                 handler: function async(response) {
-                    console.log(response.razorpay_payment_id);
-                    // Create firebase database to store the payment success query
+                    console.log(response);
+                    firestore.collection("bookings").doc().set ({
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp (),
+                        paymentId: response.razorpay_payment_id,
+                        userId: localStorage.getItem("uid"),
+                        sessionId: localStorage.getItem("sessionId"),
+                        bookingTime: JSON.parse(localStorage.getItem("selectedDate"))
+                    }).then (() => {
+                        localStorage.removeItem("sessionId")
+                        localStorage.removeItem("selectedDate")
+                    }).catch (err => console.log(err.message))
                     // Redirect to the confirmation page
                 },
                 prefill: {
@@ -100,9 +113,9 @@ class Appointment extends React.Component {
                             borderRadius={10}
                             primaryColor="#052778"
                             eventDurationInMinutes={15}
-                            availableTimeslots={availableTimeslots}
+                            availableTimeslots={this.state.availableTimeSlots}
                             onStartTimeSelect={(object) => this.setState({ selectedDate: object },
-                                () => console.log(this.state.selectedDate))}
+                                () => console.log(this.state.selectedDate.startTime))}
                         />
                     </div>
                     <div className="col-12 col-md-4">
