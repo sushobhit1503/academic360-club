@@ -4,6 +4,7 @@ import firebase from "../config";
 import { ScheduleMeeting } from 'react-schedule-meeting';
 import withRouter from "../components/withRouter"
 import { Button } from "reactstrap";
+import emailjs from "@emailjs/browser"
 
 const availableTimeslots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((id) => {
     return {
@@ -58,8 +59,7 @@ class Appointment extends React.Component {
                 "https://checkout.razorpay.com/v1/checkout.js"
             );
             if (!res) return;
-            localStorage.setItem("sessionId", this.props.params.sessionId)
-            localStorage.setItem("selectedDate", JSON.stringify(this.state.selectedDate.startTime))
+            const {userDetails, sessionId, selectedDate} = this.state
             const options = {
                 key: "rzp_test_RzYQGECWiji4Ln", // change when making live
                 currency: "INR",
@@ -70,16 +70,25 @@ class Appointment extends React.Component {
                 //   callback_url: "https://academics360.club/",
                 handler: function async(response) {
                     console.log(response);
-                    firestore.collection("bookings").doc().set ({
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp (),
+                    firestore.collection("bookings").doc().set({
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         paymentId: response.razorpay_payment_id,
                         userId: localStorage.getItem("uid"),
-                        sessionId: localStorage.getItem("sessionId"),
-                        bookingTime: JSON.parse(localStorage.getItem("selectedDate"))
-                    }).then (() => {
-                        localStorage.removeItem("sessionId")
-                        localStorage.removeItem("selectedDate")
-                    }).catch (err => console.log(err.message))
+                        sessionId: sessionId,
+                        bookingTime: selectedDate
+                    }).then(() => {
+                        let templateParams = {
+                            from_name: userDetails.email,
+                            to_name: userDetails.name,
+                            subject: "QUERY FROM CEReS 2022 Website",
+                            reply_to: "official.academic360@gmail.com",
+                            message: "Congratulations!! Your appointment has been booked."
+                        }
+                        emailjs.send('service_w2cbgtf', 'template_oevwn69', templateParams, 'x0yoXZhLLLAmkfimK')
+                            .then(() => {
+                                window.location.reload()
+                            }).catch (err => console.log(err.message))
+                    }).catch(err => console.log(err.message))
                     // Redirect to the confirmation page
                 },
                 prefill: {
