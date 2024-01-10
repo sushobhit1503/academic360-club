@@ -26,15 +26,15 @@ class Home extends React.Component {
     render() {
         return (
             <div className="px-xl-5 px-3 py-3">
-                <div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
-                    <div className="col">
+                <div className="row row-cols-1 row-cols-md-3 g-3">
+                    {/* <div className="col">
                         <Card>
                             <CardBody className="text-center">
                                 <div className="h1"></div>
                                 <div className="h4">Total Website Visits</div>
                             </CardBody>
                         </Card>
-                    </div>
+                    </div> */}
                     <div className="col">
                         <Card>
                             <CardBody className="text-center">

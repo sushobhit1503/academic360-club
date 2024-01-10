@@ -30,6 +30,12 @@ class Toolbar extends React.Component {
                             <NavItem>
                                 <NavLink href="/sessions">Sessions</NavLink>
                             </NavItem>
+                            <NavItem>
+                                <NavLink href="/appointments">Appointments</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="/queries">Queries</NavLink>
+                            </NavItem>
                         </Nav>
                     </Collapse>
                 </Navbar>

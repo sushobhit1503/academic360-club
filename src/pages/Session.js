@@ -17,6 +17,7 @@ class Session extends React.Component {
             discountedPrice: "",
             time: "",
             id: "",
+            link: "",
             isDetails: false
         }
     }
@@ -62,15 +63,15 @@ class Session extends React.Component {
         }
         const editSession = () => {
             this.setState({ isDetails: true })
-            const { name, discountedPrice, actualPrice, organiser, time, id } = this.state
+            const { name, discountedPrice, actualPrice, organiser, time, id, link } = this.state
             firestore.collection("sessions").doc(id).update({
-                name, discountedPrice, actualPrice, organiser, time
+                name, discountedPrice, actualPrice, organiser, time, link
             })
         }
         const createSession = () => {
-            const { name, discountedPrice, actualPrice, organiser, time } = this.state
+            const { name, discountedPrice, actualPrice, organiser, time, link } = this.state
             firestore.collection("sessions").doc().set({
-                name, discountedPrice, actualPrice, organiser, time,
+                name, discountedPrice, actualPrice, organiser, time, link,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 sessionViews: 0
             }).then(() => window.location.reload())
@@ -219,6 +220,10 @@ class Session extends React.Component {
                             <Label>Time (in mins)</Label>
                             <Input placeholder="Enter duration of the session" onChange={onChange} value={this.state.time} name="time" />
                         </div>
+                        <div className="mb-3">
+                            <Label>Meeting Link</Label>
+                            <Input placeholder="Enter the meeting link" onChange={onChange} value={this.state.link} name="link" />
+                        </div>
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={createSession} color="success">
@@ -254,6 +259,10 @@ class Session extends React.Component {
                         <div className="mb-3">
                             <Label>Time (in mins)</Label>
                             <Input placeholder="Enter duration of the session" onChange={onChange} value={this.state.time} name="time" />
+                        </div>
+                        <div className="mb-3">
+                            <Label>Meeting Link</Label>
+                            <Input placeholder="Enter the meeting link" onChange={onChange} value={this.state.link} name="link" />
                         </div>
                     </ModalBody>
                     <ModalFooter>
