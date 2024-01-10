@@ -3,7 +3,7 @@ import React from "react";
 class Terms extends React.Component {
     render() {
         return (
-            <div>
+            <div style={{paddingTop:"120px"}} className="main-container">
                 <div className="h2 mb-3">Terms and Conditions</div>
                 <div className="mb-2">Welcome to Academic 360: Your Path to Success!</div>
                 <div className="mb-3">
@@ -172,7 +172,7 @@ class Terms extends React.Component {
                     available or that the material on the website is kept up to date.
                 </div>
                 <div className="h3 mb-3">Disclaimer:</div>
-                <div className="mb-3">
+                <div style={{marginBottom: "75px"}}>
                     To the maximum extent permitted by applicable law, we exclude all representations,
                     warranties, and conditions relating to our website and the use of this website. Nothing in this disclaimer will:
                     <ul>

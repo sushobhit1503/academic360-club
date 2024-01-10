@@ -3,7 +3,7 @@ import React from "react"
 class Refund extends React.Component {
     render() {
         return (
-            <div>
+            <div style={{paddingTop:"120px"}} className="main-container">
                 <div className="h2 mb-3">Returns & Refunds policy</div>
                 <div className="mb-3">
                     At Academic 360, we strive to provide the best possible experience for our users,
@@ -35,7 +35,7 @@ class Refund extends React.Component {
                 <div className="h3 mb-3">
                     Please note the following important points:
                 </div>
-                <div className="mb-3">
+                <div style={{marginBottom: "75px"}}>
                     Refunds will be processed using the original payment method whenever possible.
                     Refunds may take up to 5-10 business days to be processed and reflected in the user's account
                     after the amount to be refunded is decided. <br /> <br />

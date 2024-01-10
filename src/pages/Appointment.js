@@ -5,6 +5,7 @@ import { ScheduleMeeting } from 'react-schedule-meeting';
 import withRouter from "../components/withRouter"
 import { Button } from "reactstrap";
 import emailjs from "@emailjs/browser"
+import Moment from "react-moment";
 
 const availableTimeslots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((id) => {
     return {
@@ -42,8 +43,8 @@ class Appointment extends React.Component {
                         const availableTimeSlots = this.state.allTimeSlots.map((eachSlot) => {
                             return {
                                 id: eachSlot.createdAt,
-                                startTime: new Date(new Date(new Date().setDate(parseInt(eachSlot.date.substring(9)))).setHours(parseInt(eachSlot.startTime.substring(1)), parseInt(eachSlot.startTime.substring(4)), 0, 0)),
-                                endTime: new Date(new Date(new Date().setDate(parseInt(eachSlot.date.substring(9)))).setHours(parseInt(eachSlot.endTime.substring(1)), parseInt(eachSlot.endTime.substring(4)), 0, 0)),
+                                startTime: new Date(new Date(new Date().setDate(15)).setHours(parseInt(eachSlot.startTime.substring(1)), parseInt(eachSlot.startTime.substring(4)), 0, 0)),
+                                endTime: new Date(new Date(new Date().setDate(15)).setHours(parseInt(eachSlot.endTime.substring(1)), parseInt(eachSlot.endTime.substring(4)), 0, 0)),
                             };
                         });
                         this.setState({ availableTimeSlots })
@@ -89,7 +90,7 @@ class Appointment extends React.Component {
                                 window.location.reload()
                             }).catch(err => console.log(err.message))
                     }).catch(err => console.log(err.message))
-                    // Redirect to the confirmation page
+                    window.location.href = "/"
                 },
                 prefill: {
                     name: this.state.userDetails.name,
@@ -114,24 +115,34 @@ class Appointment extends React.Component {
             });
         };
         return (
-            <div className="py-5 px-3" >
+            <div style={{ paddingTop: "120px", paddingBottom: "75px" }} className="main-container">
                 <div className="row row-cols-1 row-cols-md-2 g-3 mb-3">
                     <div className="col-12 col-md-8">
-                        <div className="h5">Select Date and Time:</div>
+                        <div className="h5 ms-3">Select Date and Time:</div>
                         <ScheduleMeeting
                             borderRadius={10}
                             primaryColor="#052778"
                             eventDurationInMinutes={15}
                             availableTimeslots={this.state.availableTimeSlots}
                             onStartTimeSelect={(object) => this.setState({ selectedDate: object },
-                                () => console.log(this.state.selectedDate.startTime))}
+                                () => console.log(this.state.selectedDate))}
                         />
                     </div>
                     <div className="col-12 col-md-4">
                         <div className="h3">{this.state.sessionDetails.name}</div>
-                        <div className="d-flex gap-3 align-items-center">
-                            <i className="fa fa-calendar"></i>
-                            {/* <div>{this.state.selectedDate.startTime}</div> */}
+                        <div className="d-flex gap-3 align-items-center mb-3">
+                            <i style={{width:"20px"}} className="fa fa-calendar session-icons"></i>
+                            <div className="fw-bold"><Moment format="D MMM YYYY HH : MM">
+                                {this.state.selectedDate.startTime}
+                            </Moment></div>
+                        </div>
+                        <div className="d-flex gap-3 align-items-center mb-3">
+                            <i style={{width:"20px"}} className="fa fa-clock-o session-icons"></i>
+                            <div className="fw-bold">{this.state.sessionDetails.time} minutes</div>
+                        </div>
+                        <div className="d-flex gap-3 align-items-center mb-3">
+                            <i style={{width:"20px"}} className="fa fa-map-marker session-icons"></i>
+                            <div className="fw-bold">Online meeting link will be shared after payment.</div>
                         </div>
                         <div>
                             <Button onClick={showRazorpay} className="button-submit" color="success">

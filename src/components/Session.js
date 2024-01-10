@@ -5,6 +5,8 @@ import { firestore } from "../config";
 class Session extends React.Component {
     render() {
         const sessionViews = () => {
+            if (!localStorage.getItem("uid"))
+                window.location.href = "/login"
             firestore.collection("sessions").doc(this.props.id).update({
                 sessionViews: this.props.sessionViews + 1
             }).then(() => {

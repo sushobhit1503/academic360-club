@@ -3,7 +3,7 @@ import React from "react"
 class Privacy extends React.Component {
     render() {
         return (
-            <div>
+            <div style={{paddingTop:"120px"}} className="main-container">
                 <div className="h2 mb-3">Privacy Policy</div>
                 <div className="mb-3">
                     Academic 360 and https://www.academic360.club website is owned by Academic 360,
@@ -96,7 +96,7 @@ class Privacy extends React.Component {
                 <div className="h5 mb-3">
                     Contact Information:
                 </div>
-                <div className="mb-3">
+                <div style={{marginBottom: "75px"}}>
                     If you would like to contact us to understand more about this Policy or wish to contact us concerning
                     any matter relating to individual rights and your Personal Information, you may send an email to
                     <a>academic360@hotmail.com</a>.

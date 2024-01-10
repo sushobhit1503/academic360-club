@@ -24,8 +24,8 @@ class CounselorProfile extends React.Component {
     }
     render() {
         return (
-            <div>
-                <div className="text-center bg-primary mb-3 h1 text-primary p-3 py-5 p-xl-5 mt-3">
+            <div style={{paddingTop:"100px"}}>
+                <div className="text-center bg-primary h1 text-primary p-5">
                     Counselor Profiles
                 </div>
                 <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3 mb-5 p-3">
@@ -38,7 +38,7 @@ class CounselorProfile extends React.Component {
                                 location={eachCounselor.data.location}
                                 introduction={eachCounselor.data.introduction}
                                 description={eachCounselor.data.description}
-                                profilePicture={eachCounselor.data.profilePicture}
+                                profilePicture={eachCounselor.data.profileUrl}
                                 degree={eachCounselor.data.degree}
                                 profileViews={eachCounselor.data.profileViews} />
                             </div>

@@ -115,6 +115,17 @@
     height: 200px;
 }
 
+.linkedin-icon {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: var(--light-blue);
+    font-size: 32px;
+}
+
+.session-icons {
+    color: #D3D3D3;
+}
+
 @media screen and (max-width: 900px) {
     .main-container {
         padding: 0px 2rem;
