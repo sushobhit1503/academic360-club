@@ -59,7 +59,7 @@ class Appointment extends React.Component {
                 "https://checkout.razorpay.com/v1/checkout.js"
             );
             if (!res) return;
-            const {userDetails, sessionId, selectedDate} = this.state
+            const { userDetails, sessionId, selectedDate } = this.state
             const options = {
                 key: "rzp_test_RzYQGECWiji4Ln", // change when making live
                 currency: "INR",
@@ -80,14 +80,14 @@ class Appointment extends React.Component {
                         let templateParams = {
                             from_name: userDetails.email,
                             to_name: userDetails.name,
-                            subject: "QUERY FROM CEReS 2022 Website",
+                            subject: "Appointment Booking Confirmation",
                             reply_to: "official.academic360@gmail.com",
                             message: "Congratulations!! Your appointment has been booked."
                         }
                         emailjs.send('service_w2cbgtf', 'template_oevwn69', templateParams, 'x0yoXZhLLLAmkfimK')
                             .then(() => {
                                 window.location.reload()
-                            }).catch (err => console.log(err.message))
+                            }).catch(err => console.log(err.message))
                     }).catch(err => console.log(err.message))
                     // Redirect to the confirmation page
                 },

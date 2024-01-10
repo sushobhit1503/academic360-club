@@ -28,6 +28,10 @@
     background-color: var(--light-blue)!important;
 }
 
+.bg-tertiary {
+    background-color: var(--white)!important;
+}
+
 .text-primary {
     color: var(--white)!important;
 }
@@ -90,6 +94,27 @@
     color: #D3D3D3;
 }
 
+.toolbar-logo {
+    width: 75px;
+}
+
+.toolbar-box-shadow {
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
+}
+
+.footer-social-media {
+    padding: 8px 15px;
+    border-radius: 50%;
+    background-color: var(--blue);
+    color: var(--white);
+    font-size: 24px;
+}
+
+.who-image {
+    width: 125px;
+    height: 200px;
+}
+
 @media screen and (max-width: 900px) {
     .main-container {
         padding: 0px 2rem;
@@ -138,4 +163,8 @@
     .h5 {
         font-size: 1rem!important;
     }  
+
+    .bg-transparent {
+        background-color: var(--blue)!important;
+    }
 }

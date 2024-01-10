@@ -1,15 +1,76 @@
 import React from "react"
 import { Button, Card, CardBody, Input, Label } from "reactstrap"
+import { firestore } from "../config"
+import Image1 from "../assets/who-we-are-1.jpeg"
+import Image2 from "../assets/who-we-are-2.jpeg"
+import firebase from "../config"
+import emailjs from "@emailjs/browser"
 
 class Home extends React.Component {
+    constructor () {
+        super ()
+        this.state = {
+            name: "",
+            email: "",
+            phoneNumber: "",
+            message: "",
+            submitMessage: "",
+            messageColor: ""
+        }
+    }
+    componentDidMount () {
+        const uid = localStorage.getItem("uid")
+        if (uid) {
+            firestore.collection("users").doc(uid).get().then(document => {
+                const {name, email, phoneNumber} = document.data()
+                this.setState ({name, email, phoneNumber})
+            }).catch(err => console.log(err.message))
+        }
+    }
     render() {
+        const onChange = (e) => {
+            const {name, value} = e.target
+            this.setState ({[name]: value})
+        }
+
+        const onSubmit = () => {
+            const {name, email, message, phoneNumber} = this.state
+            firestore.collection("contact").doc().set ({
+                name,
+                email,
+                message,
+                phoneNumber,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp ()
+            }).then(() => {
+                this.setState({ submitMessage: "Our team will contact you shortly.", messageColor: "#0F9D58" })
+                setTimeout(() => {
+                    this.setState({ submitMessage: "" })
+                }, 3000)
+                let templateParams = {
+                    from_name: this.state.name,
+                    phone_number: this.state.phoneNumber,
+                    subject: "Contact Query",
+                    reply_to: this.state.email,
+                    message: this.state.message
+                }
+                emailjs.send('service_w2cbgtf', 'template_cda84sm', templateParams, 'x0yoXZhLLLAmkfimK')
+                    .then(() => {
+                        window.location.reload()
+                    }).catch(err => console.log(err.message))
+            }).catch(err => {
+                this.setState({ submitMessage: "Some error occurred. Please try again after sometime.", messageColor: "#DB4437" })
+                setTimeout(() => {
+                    this.setState({ submitMessage: "" })
+                }, 3000)
+            })
+        }
         return (
             <div>
-                <div className="home-background">
-                    <div className="h1 pt-md-5 pt-3 mb-2 text-secondary">
+                <div className="home-background mb-3">
+                    <div className="h1 pt-md-5 pt-3 text-secondary">
                         ACADEMIC 360
                     </div>
-                    <div className="h4 text-center mb-xl-5 mb-3 text-secondary">
+                    <div className="h4 text-center mb-3 text-primary">
                         Your Gateway to Informed Education Abroad
                     </div>
                     <Button className="bg-primary h5">
@@ -17,7 +78,7 @@ class Home extends React.Component {
                     </Button>
                 </div>
                 <div className="main-container">
-                    <div className="row row-cols-1 row-cols-md-2 g-3 mb-3 pt-3">
+                    <div className="row row-cols-1 row-cols-md-2 g-3 mt-3">
                         <div className="col">
                             <div className="h2 mb-3">
                                 Who We Are
@@ -52,11 +113,18 @@ class Home extends React.Component {
                             </div>
                         </div>
                         <div className="col">
-
+                            <div className="d-flex align-items-center gap-3">
+                                <div className="who-image-1">
+                                    <img src={Image1} className="who-image"/>
+                                </div>
+                                <div className="who-image-2">
+                                    <img src={Image2} className="who-image"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="text-center bg-primary mb-3 p-3 p-md-5">
+                <div className="text-center bg-primary my-3 p-3 p-md-5">
                     <div className="h2 mb-3 text-primary">Our Services</div>
                     <div className="text-primary px-3 text-start">
                         Welcome to Academic 360, your go-to platform for seamless international education guidance.
@@ -68,7 +136,7 @@ class Home extends React.Component {
                         your journey.
                     </div>
                 </div>
-                <div className="text-center mb-3 main-container">
+                <div className="text-center main-container">
                     <div className="h2 mb-3 text-secondary">Why Choose us?</div>
                     <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
                         <div className="col">
@@ -122,7 +190,7 @@ class Home extends React.Component {
 
                     </div>
                 </div>
-                <div className="bg-primary row row-cols-1 row-cols-md-2 g-3 mb-5">
+                <div className="bg-primary row row-cols-1 row-cols-md-2 g-3 mt-3 mb-5">
                     <div className="col">
                         <img />
                     </div>
@@ -137,21 +205,30 @@ class Home extends React.Component {
                     </div>
                 </div>
                 <div className="row row-cols-1 row-cols-md-2 g-3 mb-5 main-container">
-                    <div className="col">
+                    <div className="col mb-3">
                         <div className="h2 mb-3">Contact Us</div>
                         <div className="mb-3">
                             <Label>Name</Label>
-                            <Input placeholder="Your Name" />
+                            <Input onChange={onChange} value={this.state.name} name="name" placeholder="Your Name" />
                         </div>
                         <div className="mb-3">
-                            <Label>Your email</Label>
-                            <Input placeholder="Your Email Address" />
+                            <Label>Your Email</Label>
+                            <Input onChange={onChange} value={this.state.email} name="email" placeholder="Your Email Address" />
                         </div>
                         <div className="mb-3">
+                            <Label>Your Phone Number</Label>
+                            <Input onChange={onChange} value={this.state.phoneNumber} name="phoneNumber" placeholder="Your Phone Number" />
+                        </div>
+                        <div className="mb-1">
                             <Label>Message</Label>
-                            <Input placeholder="Enter your message" />
+                            <textarea className="form-control" onChange={onChange} value={this.state.message} name="message" rows={8} placeholder="Enter your message">
+
+                            </textarea>
                         </div>
-                        <Button className="bg-primary button-submit">
+                        <div style={{ color: this.state.messageColor, fontWeight: "bold" }}>
+                            {this.state.submitMessage}
+                        </div>
+                        <Button onClick={onSubmit} className="bg-primary button-submit mt-3">
                             Submit
                         </Button>
                     </div>
