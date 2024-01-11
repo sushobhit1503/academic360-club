@@ -14,14 +14,14 @@ class Session extends React.Component {
             }).catch(err => console.log(err.message))
         }
         return (
-            <div>
-                <Card className="cursor" onClick={sessionViews}>
+            <div className="h-100">
+                <Card className="cursor h-100" onClick={sessionViews}>
                     <CardBody>
                         <img />
                         <div className="h5 mb-1">{this.props.name}</div>
                         <div>
-                            <span className="actual-price me-2"><i className="bi bi-currency-rupee"></i>{this.props.actualPrice}</span>
-                            <i className="bi bi-currency-rupee"></i>{this.props.discount} | {this.props.time}</div>
+                            <span className="actual-price me-2"><i className="fa fa-inr me-1"></i>{this.props.actualPrice}</span>
+                            <i className="fa fa-inr me-1"></i>{this.props.discount} <span className="mx-2">|</span>  {this.props.time} minutes</div>
                     </CardBody>
                 </Card>
             </div>
