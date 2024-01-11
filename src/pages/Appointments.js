@@ -10,7 +10,6 @@ class Appointments extends React.Component {
             isModal: false,
             allCounselors: [],
             organiser: "",
-            date: new Date(),
             startTime: "",
             endTime: ""
         }
@@ -34,9 +33,9 @@ class Appointments extends React.Component {
             this.setState({ [name]: value })
         }
         const createTimeSlot = () => {
-            const { organiser, date, startTime, endTime } = this.state
+            const { organiser, startTime, endTime } = this.state
             firestore.collection("timeslots").doc().set({
-                date, organiser, startTime, endTime, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                organiser, startTime, endTime, createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 window.location.reload()
             }).catch(err => console.log(err.message))
@@ -63,16 +62,12 @@ class Appointments extends React.Component {
                             </select>
                         </div>
                         <div className="mb-3">
-                            <Label>Date</Label>
-                            <Input placeholder="Enter date" onChange={onChange} value={this.state.date} name="date" type="date" />
-                        </div>
-                        <div className="mb-3">
                             <Label>Start Time</Label>
-                            <Input placeholder="Enter start time" onChange={onChange} value={this.state.startTime} name="startTime" type="time" />
+                            <Input placeholder="Enter start time" onChange={onChange} value={this.state.startTime} name="startTime" type="datetime-local" />
                         </div>
                         <div className="mb-3">
                             <Label>End Time</Label>
-                            <Input placeholder="Enter end time" onChange={onChange} value={this.state.endTime} name="endTime" type="time" />
+                            <Input placeholder="Enter end time" onChange={onChange} value={this.state.endTime} name="endTime" type="datetime-local" />
                         </div>
                     </ModalBody>
                     <ModalFooter>
