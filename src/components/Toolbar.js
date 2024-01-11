@@ -1,7 +1,8 @@
 import React from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText, Button } from 'reactstrap';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, NavbarText, Button } from 'reactstrap';
 import Logo from "../assets/logo.avif"
 import withRouter from "../components/withRouter"
+import { firestore } from "../config"
 
 class Toolbar extends React.Component {
     constructor() {
@@ -9,7 +10,8 @@ class Toolbar extends React.Component {
         this.state = {
             isOpen: false,
             activeClassBar: "",
-            activeClassButton: "bg-primary"
+            activeClassButton: "bg-primary",
+            userDetails: {}
         }
     }
     componentDidMount() {
@@ -29,7 +31,11 @@ class Toolbar extends React.Component {
             activeClassButton = "bg-tertiary text-secondary"
             this.setState({ activeClassBar, activeClassButton })
         }
-
+        if (localStorage.getItem("uid")) {
+            firestore.collection("users").doc(localStorage.getItem("uid")).get().then(document => {
+                this.setState({ userDetails: document.data() })
+            }).catch(err => console.log(err.message))
+        }
     }
     render() {
         const toggle = () => {
@@ -39,7 +45,7 @@ class Toolbar extends React.Component {
             <div>
                 <Navbar className={`${this.state.activeClassBar} position-fixed w-100 mobile-background`} expand="md" light style={{ zIndex: 3 }}>
                     <NavbarBrand href="/">
-                        <img src={Logo} className='toolbar-logo' />
+                        <img src={Logo} className='toolbar-logo' alt='academics360' />
                     </NavbarBrand>
                     <NavbarToggler onClick={toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
@@ -55,6 +61,9 @@ class Toolbar extends React.Component {
                         </Nav>
                         {localStorage.getItem("uid") ?
                             <NavbarText>
+                                <span className='text-primary me-3'>
+                                Hi, {this.state.userDetails?.name?.split(" ")[0]}
+                                </span>
                                 <Button onClick={() => { localStorage.removeItem("uid"); window.location.reload() }} className={`button-login ${this.state.activeClassButton} mb-3 mb-md-0`}>
                                     Logout
                                 </Button>

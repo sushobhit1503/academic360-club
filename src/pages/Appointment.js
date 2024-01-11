@@ -6,7 +6,7 @@ import withRouter from "../components/withRouter"
 import { Button } from "reactstrap";
 import emailjs from "@emailjs/browser"
 import Moment from "react-moment";
-import { bookedSlots, finalCalculations } from "../util/bookedSlots";
+import { bookedSlots, finalSlots } from "../util/bookedSlots";
 
 class Appointment extends React.Component {
     constructor() {
@@ -49,7 +49,7 @@ class Appointment extends React.Component {
                         });
                         const bookedSlotTimings = bookedSlots (this.state.bookedTimeSlots)
                         const pendingSlotTimings = timeSlotDifference (availableTimeSlots, bookedSlotTimings)
-                        // const finalSlotTimings = finalCalculations (pendingSlotTimings, this.state.sessionDetails)
+                        const finalSlotTimings = finalSlots (pendingSlotTimings, this.state.sessionDetails)
                         console.log(pendingSlotTimings)
                         // console.log(finalSlotTimings)
                         this.setState({ availableTimeSlots: pendingSlotTimings })

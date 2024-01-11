@@ -73,7 +73,7 @@ class Home extends React.Component {
                     <div className="h4 text-center mb-3 text-primary">
                         Your Gateway to Informed Education Abroad
                     </div>
-                    <Button className="bg-primary h5">
+                    <Button onClick={() => window.location.href="/counselor-profiles"} className="bg-primary h5">
                         Start Counselling
                     </Button>
                 </div>
@@ -115,10 +115,10 @@ class Home extends React.Component {
                         <div className="col">
                             <div className="d-flex align-items-center gap-3">
                                 <div className="who-image-1">
-                                    <img src={Image1} className="who-image"/>
+                                    <img src={Image1} className="who-image" alt="academics360"/>
                                 </div>
                                 <div className="who-image-2">
-                                    <img src={Image2} className="who-image"/>
+                                    <img src={Image2} className="who-image" alt="academics360"/>
                                 </div>
                             </div>
                         </div>
@@ -192,7 +192,7 @@ class Home extends React.Component {
                 </div>
                 <div className="bg-primary row row-cols-1 row-cols-md-2 g-3 mt-3 mb-5">
                     <div className="col">
-                        <img />
+                        <img alt="academics360" />
                     </div>
                     <div className="col py-5">
                         <div className="h2 mb-3 text-primary px-3 px-md-5">Our Mission</div>
