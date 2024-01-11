@@ -54,6 +54,7 @@ class Appointments extends React.Component {
                         <div className="mb-3">
                             <Label>Organiser Name</Label>
                             <select className="form-select" onChange={onChange} name="organiser" value={this.state.organiser}>
+                                <option>Select Organiser</option>
                                 {this.state.allCounselors.map(eachCounselor => {
                                     return (
                                         <option key={eachCounselor.id} value={eachCounselor.id}>{eachCounselor.data.name}</option>
