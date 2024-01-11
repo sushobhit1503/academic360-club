@@ -13,7 +13,7 @@ class Counselor extends React.Component {
         }
         return (
             <div className="h-100">
-                <Card>
+                <Card className="h-100">
                     <CardBody className="text-center">
                         <img src={this.props.profilePicture} className="mb-3 counselor-picture" />
                         <div className="h5">{this.props.name}</div>
