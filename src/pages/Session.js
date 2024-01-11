@@ -66,6 +66,10 @@ class Session extends React.Component {
             const { name, discountedPrice, actualPrice, organiser, time, id, link } = this.state
             firestore.collection("sessions").doc(id).update({
                 name, discountedPrice, actualPrice, organiser, time, link
+            }).then (() => {
+                window.location.reload ()
+            }).catch (err => {
+                console.log(err.message);
             })
         }
         const createSession = () => {
