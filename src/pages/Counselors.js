@@ -1,7 +1,7 @@
 import React from "react";
 import { firestore, storage } from "../config";
 import firebase from "../config";
-import { CardBody, Input, Table, Card, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { CardBody, Input, Table, Card, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter, InputGroupText } from "reactstrap";
 
 class Counselors extends React.Component {
     constructor() {
@@ -77,24 +77,39 @@ class Counselors extends React.Component {
         const editProfile = () => {
             const { name, email, phoneNumber, description, introduction, location, linkedin, degree, id, profilePicture } = this.state
             let profileUrl = ""
-            storage.ref(`/images/${profilePicture.name}`).put(profilePicture).on("state_changed", () => {
-            }, null, () => {
-                storage.ref("images").child(profilePicture.name).getDownloadURL().then(url => {
-                    profileUrl = url
-                    firestore.collection("counselors").doc(id).update({
-                        name: name,
-                        email: email,
-                        phoneNumber: phoneNumber,
-                        location: location,
-                        degree: degree,
-                        description: description,
-                        linkedin: linkedin,
-                        profileUrl: profileUrl,
-                        introduction: introduction
-                    }).then(() => window.location.reload())
-                        .catch(err => console.log(err.message))
-                }).catch(err => console.log(err.message))
-            })
+            if (profilePicture) {
+                storage.ref(`/images/${profilePicture.name}`).put(profilePicture).on("state_changed", () => {
+                }, null, () => {
+                    storage.ref("images").child(profilePicture.name).getDownloadURL().then(url => {
+                        profileUrl = url
+                        firestore.collection("counselors").doc(id).update({
+                            name: name,
+                            email: email,
+                            phoneNumber: phoneNumber,
+                            location: location,
+                            degree: degree,
+                            description: description,
+                            linkedin: linkedin,
+                            profileUrl: profileUrl,
+                            introduction: introduction
+                        }).then(() => window.location.reload())
+                            .catch(err => console.log(err.message))
+                    }).catch(err => console.log(err.message))
+                })
+            }
+            else {
+                firestore.collection("counselors").doc(id).update({
+                    name: name,
+                    email: email,
+                    phoneNumber: phoneNumber,
+                    location: location,
+                    degree: degree,
+                    description: description,
+                    linkedin: linkedin,
+                    introduction: introduction
+                }).then(() => window.location.reload())
+                    .catch(err => console.log(err.message))
+            }
         }
         const changeVisibility = (id, visibility) => {
             firestore.collection("counselors").doc(id).update({
@@ -292,6 +307,9 @@ class Counselors extends React.Component {
                         <div className="mb-3">
                             <Label>Profile Picture</Label>
                             <Input id="fileInput" onChange={fileChange} name="profilePicture" type="file" />
+                            <div style={{color: "#DB4437"}}>
+                                Upload picture only if you want to change. The previous photo is already stored.
+                            </div>
                         </div>
                         <div className="mb-3">
                             <Label>Description</Label>
