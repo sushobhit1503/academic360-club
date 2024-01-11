@@ -12,8 +12,8 @@ class Counselor extends React.Component {
             }).catch (err => console.log(err.message))
         }
         return (
-            <div>
-                <Card className="h-100">
+            <div className="h-100">
+                <Card>
                     <CardBody className="text-center">
                         <img src={this.props.profilePicture} className="mb-3 counselor-picture" />
                         <div className="h5">{this.props.name}</div>
