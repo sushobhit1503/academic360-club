@@ -60,7 +60,7 @@ class Login extends React.Component {
         const loginSubmit = () => {
             this.state.result.confirm(this.state.otp).then(result => {
                 localStorage.setItem("uid", result.user.uid)
-                window.location.reload()
+                window.location.href="/"
             }).catch(err => console.log(err.message))
         }
 
@@ -72,7 +72,7 @@ class Login extends React.Component {
                     id: result.user.uid
                 }).then(() => {
                     localStorage.setItem("uid", result.user.uid)
-                    window.location.reload()
+                    window.location.href = "/"
                 }).catch(err => console.log(err.message))
             }).catch(err => console.log(err.message))
         }
