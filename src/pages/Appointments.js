@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Modal, ModalHeader, Label, Input, ModalBody, ModalFooter, Table, Card, CardBody } from "reactstrap";
 import { firestore } from "../config";
 import firebase from "../config";
+import Moment from "react-moment";
 
 class Appointments extends React.Component {
     constructor() {
@@ -89,10 +90,15 @@ class Appointments extends React.Component {
                                             {this.state.allCounselors.find(x => x.id === eachUser.data?.organiser).data?.name}
                                         </th>
                                         <td>
-                                            {eachUser.data.startTime}
+                                            <Moment format="DD-MM-YYYY HH:mm">
+                                                {eachUser.data.startTime}
+                                            </Moment>
+
                                         </td>
                                         <td>
-                                            {eachUser.data.endTime}
+                                            <Moment format="DD-MM-YYYY HH:mm">
+                                                {eachUser.data.endTime}
+                                            </Moment>
                                         </td>
                                         <td>
                                             <Button onClick={() => deleteSession(eachUser.id)} color="danger">
@@ -116,11 +122,17 @@ class Appointments extends React.Component {
                                     </div>
                                     <div className="mb-3">
                                         <Label className="mb-0">Start Time</Label>
-                                        <div className="fw-bold">{eachUser.data.startTime}</div>
+                                        <div className="fw-bold">
+                                            <Moment format="DD-MM-YYYY HH:mm">
+                                                {eachUser.data.startTime}
+                                            </Moment></div>
                                     </div>
                                     <div className="mb-3">
                                         <Label className="mb-0">End Time</Label>
-                                        <div className="fw-bold">{eachUser.data.endTime}</div>
+                                        <div className="fw-bold">
+                                            <Moment format="DD-MM-YYYY HH:mm">
+                                                {eachUser.data.endTime}
+                                            </Moment></div>
                                     </div>
                                     <div className="mb-3">
                                         <Button onClick={() => deleteSession(eachUser.id)} color="danger">
