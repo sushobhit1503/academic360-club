@@ -27,10 +27,10 @@ class Appointment extends React.Component {
         })
         firestore.collection("bookings").where("sessionId", "==", this.props.params.sessionId).get().then(Snapshot => {
             let temp = []
-            Snapshot.forEach (document => {
+            Snapshot.forEach(document => {
                 temp.push(document.data())
             })
-            this.setState ({bookedTimeSlots: temp}, () => console.log(this.state.bookedTimeSlots))
+            this.setState({ bookedTimeSlots: temp }, () => console.log(this.state.bookedTimeSlots))
         })
         firestore.collection("sessions").doc(this.props.params.sessionId).get().then(document => {
             this.setState({ sessionDetails: document.data(), sessionId: this.props.params.sessionId }, () => {
@@ -47,12 +47,10 @@ class Appointment extends React.Component {
                                 endTime: new Date(eachSlot.endTime),
                             };
                         });
-                        const bookedSlotTimings = bookedSlots (this.state.bookedTimeSlots)
-                        const pendingSlotTimings = timeSlotDifference (availableTimeSlots, bookedSlotTimings)
-                        const finalSlotTimings = finalSlots (pendingSlotTimings, this.state.sessionDetails)
-                        console.log(pendingSlotTimings)
-                        // console.log(finalSlotTimings)
-                        this.setState({ availableTimeSlots: pendingSlotTimings })
+                        const bookedSlotTimings = bookedSlots(this.state.bookedTimeSlots)
+                        const pendingSlotTimings = timeSlotDifference(availableTimeSlots, bookedSlotTimings)
+                        const finalSlotTimings = finalSlots(pendingSlotTimings, this.state.sessionDetails)
+                        this.setState({ availableTimeSlots: finalSlotTimings })
                     })
                 }).catch(err => console.log(err.message))
             })
@@ -136,21 +134,24 @@ class Appointment extends React.Component {
                     <div className="col-12 col-md-4">
                         <div className="h3">{this.state.sessionDetails.name}</div>
                         <div className="d-flex gap-3 align-items-center mb-3">
-                            <i style={{width:"20px"}} className="fa fa-calendar session-icons"></i>
-                            <div className="fw-bold"><Moment format="D MMM YYYY HH : M">
-                                {this.state.selectedDate.startTime}
-                            </Moment></div>
+                            <i style={{ width: "20px" }} className="fa fa-calendar session-icons"></i>
+                            <div className="fw-bold">
+                                {this.state.selectedDate.startTime ?
+                                    <Moment format="D MMM YYYY HH : mm">
+                                        {this.state.selectedDate.startTime}
+                                    </Moment> : "-- : --"}
+                            </div>
                         </div>
                         <div className="d-flex gap-3 align-items-center mb-3">
-                            <i style={{width:"20px"}} className="fa fa-clock-o session-icons"></i>
+                            <i style={{ width: "20px" }} className="fa fa-clock-o session-icons"></i>
                             <div className="fw-bold">{this.state.sessionDetails.time} minutes</div>
                         </div>
                         <div className="d-flex gap-3 align-items-center mb-3">
-                            <i style={{width:"20px"}} className="fa fa-map-marker session-icons"></i>
+                            <i style={{ width: "20px" }} className="fa fa-map-marker session-icons"></i>
                             <div className="fw-bold">Online meeting link will be shared after payment.</div>
                         </div>
                         <div>
-                            <Button onClick={showRazorpay} className="button-submit" color="success">
+                            <Button disabled={this.state.selectedDate === ""} onClick={showRazorpay} className="button-submit" color="success">
                                 Book Now
                             </Button>
                         </div>
