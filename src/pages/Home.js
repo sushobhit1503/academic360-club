@@ -121,7 +121,8 @@ class Home extends React.Component {
                                 <div className="who-image-2">
                                 </div>
                             </div>
-                            <div className="d-block d-md-none align-items-center gap-3 justify-content-center h-100">
+                            <div className="d-block d-md-none align-items-center gap-3 justify-content-centercode .
+                             h-100">
                                 <div className="mb-3">
                                     <img src={Image1} className="who-image" />
                                 </div>

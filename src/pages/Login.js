@@ -2,6 +2,7 @@ import React from "react"
 import { Button, Card, CardBody, Input, Label, InputGroup, InputGroupText } from "reactstrap"
 import { firestore } from "../config"
 import firebase from "../config"
+import Timer from "../components/CounterTime"
 
 class Login extends React.Component {
     constructor() {
@@ -35,7 +36,6 @@ class Login extends React.Component {
         const checkUserExist = () => {
             const { phoneNumber, pageState } = this.state
             firestore.collection("users").where("phoneNumber", "==", phoneNumber).get().then(result => {
-                console.log(result);
                 if (pageState === "register" && result.docs.length !== 0) {
                     this.setState({ error: "User already exist. Please login" })
                 }
@@ -45,20 +45,13 @@ class Login extends React.Component {
                 else {
                     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
                         "size": "invisible",
-                        "callback": (response) => { }
+                        "callback": (response) => { 
+                        }
                     });
                     let appVerifier = window.recaptchaVerifier
                     firebase.auth().signInWithPhoneNumber(("+91" + this.state.phoneNumber), appVerifier)
                         .then((confirmationResult) => {
                             this.setState({ result: confirmationResult, otpHidden: false })
-                            this.state.timer > 0 && setTimeout(() => {
-                                if (this.state.timer <= 10) {
-                                    this.setState ({timer: String(this.state.timer - 1).padStart(2, "0")})
-                                }
-                                else {
-                                    this.setState ({timer: this.state.timer - 1})
-                                }
-                            }, 1000);
                         }).catch((error) => {
                             console.log(error.message);
                         });
@@ -69,7 +62,7 @@ class Login extends React.Component {
         const loginSubmit = () => {
             this.state.result.confirm(this.state.otp).then(result => {
                 localStorage.setItem("uid", result.user.uid)
-                window.location.href="/"
+                window.location.href = "/"
             }).catch(err => console.log(err.message))
         }
 
@@ -84,6 +77,20 @@ class Login extends React.Component {
                     window.location.href = "/"
                 }).catch(err => console.log(err.message))
             }).catch(err => console.log(err.message))
+        }
+        const resendOTP = () => {
+            window.recaptchaVerifier.clear()
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                "size": "invisible",
+                "callback": (response) => { }
+            });
+            let appVerifier = window.recaptchaVerifier
+            firebase.auth().signInWithPhoneNumber(("+91" + this.state.phoneNumber), appVerifier)
+                .then((confirmationResult) => {
+                    this.setState({ result: confirmationResult, otpHidden: false })
+                }).catch((error) => {
+                    console.log(error.message);
+                });
         }
         return (
             <div className="login-background">
@@ -114,7 +121,9 @@ class Login extends React.Component {
                                                 <Label>One Time Password</Label>
                                                 <Input onChange={onChange} value={this.state.otp} name="otp" placeholder="Please enter OTP" />
                                             </div>
-                                            <div className="text-end mb-3">Resend the OTP in {this.state.timer} sec</div>
+                                            <div className="mb-3 d-flex justify-content-end">
+                                                <Timer onReset={resendOTP} />
+                                            </div>
                                         </div>}
                                     {!this.state.otpHidden &&
                                         <Button onClick={loginSubmit} className="button-submit bg-primary">
