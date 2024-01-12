@@ -3,6 +3,8 @@ import { Button, Card, CardBody, Input, Label } from "reactstrap"
 import { firestore } from "../config"
 import Image1 from "../assets/who-we-are-1.jpeg"
 import Image2 from "../assets/who-we-are-2.jpeg"
+import Mission from "../assets/mission.avif"
+import Contact from "../assets/contact.jpg"
 import firebase from "../config"
 import emailjs from "@emailjs/browser"
 
@@ -113,12 +115,18 @@ class Home extends React.Component {
                             </div>
                         </div>
                         <div className="col">
-                            <div className="d-flex align-items-center gap-3">
+                            <div className="d-md-flex d-none align-items-center gap-3 justify-content-between h-100">
                                 <div className="who-image-1">
-                                    <img src={Image1} className="who-image" alt="academics360"/>
                                 </div>
                                 <div className="who-image-2">
-                                    <img src={Image2} className="who-image" alt="academics360"/>
+                                </div>
+                            </div>
+                            <div className="d-block d-md-none align-items-center gap-3 justify-content-center h-100">
+                                <div className="mb-3">
+                                    <img src={Image1} className="who-image" />
+                                </div>
+                                <div>
+                                    <img src={Image2} className="who-image" />
                                 </div>
                             </div>
                         </div>
@@ -190,11 +198,11 @@ class Home extends React.Component {
 
                     </div>
                 </div>
-                <div className="bg-primary row row-cols-1 row-cols-md-2 g-3 mt-3 mb-5">
-                    <div className="col">
-                        <img alt="academics360" />
+                <div className="bg-primary row row-cols-1 row-cols-xl-2 g-3 mt-3 mb-5 p-3">
+                    <div className="col text-center">
+                        <img src={Mission} alt="academics360" className="mission-image" />
                     </div>
-                    <div className="col py-5">
+                    <div className="col">
                         <div className="h2 mb-3 text-primary px-3 px-md-5">Our Mission</div>
                         <div className="text-primary px-3 px-md-5">
                             Academic 360 is more than just an educational consultancy firm.
@@ -204,7 +212,7 @@ class Home extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="row row-cols-1 row-cols-md-2 g-3 mb-5 main-container">
+                <div className="row row-cols-1 row-cols-xl-2 g-3 mb-5 main-container">
                     <div className="col mb-3">
                         <div className="h2 mb-3">Contact Us</div>
                         <div className="mb-3">
@@ -232,8 +240,8 @@ class Home extends React.Component {
                             Submit
                         </Button>
                     </div>
-                    <div className="col">
-
+                    <div className="col contact-image" style={{marginBottom: "225px"}}>
+                        <img src={Contact} alt="academic360"/>
                     </div>
                 </div>
             </div>

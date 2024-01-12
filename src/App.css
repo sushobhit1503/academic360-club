@@ -21,23 +21,23 @@
 }
 
 .bg-primary {
-    background-color: var(--blue)!important;
+    background-color: var(--blue) !important;
 }
 
 .bg-secondary {
-    background-color: var(--light-blue)!important;
+    background-color: var(--light-blue) !important;
 }
 
 .bg-tertiary {
-    background-color: var(--white)!important;
+    background-color: var(--white) !important;
 }
 
 .text-primary {
-    color: var(--white)!important;
+    color: var(--white) !important;
 }
 
 .text-secondary {
-    color: var(--blue)!important;
+    color: var(--blue) !important;
 }
 
 .img-fluid {
@@ -62,23 +62,23 @@
 }
 
 .h1 {
-    font-size: 2.5rem!important;
+    font-size: 2.5rem !important;
 }
 
 .h2 {
-    font-size: 2.25rem!important;
+    font-size: 2.25rem !important;
 }
 
 .h3 {
-    font-size: 2rem!important;
+    font-size: 2rem !important;
 }
 
 .h4 {
-    font-size: 1.75rem!important;
+    font-size: 1.75rem !important;
 }
 
 .h5 {
-    font-size: 1.5rem!important;
+    font-size: 1.5rem !important;
 }
 
 .main-container {
@@ -99,7 +99,7 @@
 }
 
 .toolbar-box-shadow {
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .footer-social-media {
@@ -110,9 +110,24 @@
     font-size: 24px;
 }
 
-.who-image {
-    width: 125px;
-    height: 200px;
+.who-image-1 {
+    width: 300px;
+    height: 100%;
+    margin-top: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("./assets/who-we-are-1.jpeg");
+}
+
+.who-image-2 {
+    width: 200px;
+    height: 100%;
+    width: 300px;
+    margin-top: -200px;
+    background-position:bottom;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("./assets/who-we-are-2.jpeg");
 }
 
 .linkedin-icon {
@@ -126,56 +141,93 @@
     color: #D3D3D3;
 }
 
+.mission-image {
+    width: 600px;
+}
+
+.contact-image {
+    height: 400px;
+    text-align: center;
+    width: 400px;
+}
+
+.contact-image img {
+    display: block;
+    transform-origin: left center;
+    width: 600px;
+}
+
 @media screen and (max-width: 900px) {
     .main-container {
         padding: 0px 2rem;
-    }        
+    }
+
     .h1 {
-        font-size: 2.25rem!important;
+        font-size: 2.25rem !important;
     }
-    
+
     .h2 {
-        font-size: 2rem!important;
+        font-size: 2rem !important;
     }
-    
+
     .h3 {
-        font-size: 1.75rem!important;
+        font-size: 1.75rem !important;
     }
-    
+
     .h4 {
-        font-size: 1.5rem!important;
+        font-size: 1.5rem !important;
     }
-    
+
     .h5 {
-        font-size: 1.25rem!important;
+        font-size: 1.25rem !important;
     }
 }
 
 @media screen and (max-width: 400px) {
     .main-container {
         padding: 0px 1rem;
-    }      
+    }
+
     .h1 {
-        font-size: 2rem!important;
+        font-size: 2rem !important;
     }
-    
+
     .h2 {
-        font-size: 1.75rem!important;
+        font-size: 1.75rem !important;
     }
-    
+
     .h3 {
-        font-size: 1.5rem!important;
+        font-size: 1.5rem !important;
     }
-    
+
     .h4 {
-        font-size: 1.25rem!important;
+        font-size: 1.25rem !important;
     }
-    
+
     .h5 {
-        font-size: 1rem!important;
-    }  
+        font-size: 1rem !important;
+    }
 
     .bg-transparent {
-        background-color: var(--blue)!important;
+        background-color: var(--blue) !important;
+    }
+
+    .mission-image {
+        width: 300px;
+    }
+
+    .who-image {
+        width: 300px;
+    }
+
+    .contact-image {
+        height: 200px;
+        text-align: center;
+        margin-bottom: 75px;
+        width: 200px;
+    }
+
+    .contact-image img {
+        width: 300px;
     }
 }

@@ -15,7 +15,8 @@ class Login extends React.Component {
             email: "",
             isLoading: false,
             result: "",
-            error: ""
+            error: "",
+            timer: 30
         }
     }
     render() {
@@ -50,6 +51,14 @@ class Login extends React.Component {
                     firebase.auth().signInWithPhoneNumber(("+91" + this.state.phoneNumber), appVerifier)
                         .then((confirmationResult) => {
                             this.setState({ result: confirmationResult, otpHidden: false })
+                            this.state.timer > 0 && setTimeout(() => {
+                                if (this.state.timer <= 10) {
+                                    this.setState ({timer: String(this.state.timer - 1).padStart(2, "0")})
+                                }
+                                else {
+                                    this.setState ({timer: this.state.timer - 1})
+                                }
+                            }, 1000);
                         }).catch((error) => {
                             console.log(error.message);
                         });
@@ -105,7 +114,7 @@ class Login extends React.Component {
                                                 <Label>One Time Password</Label>
                                                 <Input onChange={onChange} value={this.state.otp} name="otp" placeholder="Please enter OTP" />
                                             </div>
-                                            <div className="text-end mb-3">Resend the OTP in 00:26 sec</div>
+                                            <div className="text-end mb-3">Resend the OTP in {this.state.timer} sec</div>
                                         </div>}
                                     {!this.state.otpHidden &&
                                         <Button onClick={loginSubmit} className="button-submit bg-primary">
@@ -146,7 +155,7 @@ class Login extends React.Component {
                                                 <Label>One Time Password</Label>
                                                 <Input onChange={onChange} value={this.state.otp} name="otp" placeholder="Please enter OTP" />
                                             </div>
-                                            <div className="text-end mb-3">Resend the OTP in 00:26 sec</div>
+                                            <div className="text-end mb-3">Resend the OTP in {this.state.timer} sec</div>
                                         </div>}
                                     {!this.state.otpHidden &&
                                         <Button onClick={registerSubmit} className="button-submit bg-primary">

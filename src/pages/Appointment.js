@@ -18,12 +18,24 @@ class Appointment extends React.Component {
             bookedTimeSlots: [],
             availableTimeSlots: [],
             selectedDate: "",
-            userDetails: {}
+            userDetails: {},
+            allCounselors: []
         }
     }
     componentDidMount() {
         firestore.collection("users").doc(localStorage.getItem("uid")).get().then(document => {
             this.setState({ userDetails: document.data() })
+        })
+        firestore.collection("counselors").get().then(Snapshot => {
+            let temp = []
+            Snapshot.forEach (document => {
+                let obj = {
+                    id: document.id,
+                    data: document.data()
+                }
+                temp.push (obj)
+            })
+            this.setState ({allCounselors: temp})
         })
         firestore.collection("bookings").where("sessionId", "==", this.props.params.sessionId).get().then(Snapshot => {
             let temp = []
@@ -63,7 +75,7 @@ class Appointment extends React.Component {
                 "https://checkout.razorpay.com/v1/checkout.js"
             );
             if (!res) return;
-            const { userDetails, sessionId, selectedDate, sessionDetails } = this.state
+            const { userDetails, sessionId, selectedDate, sessionDetails, allCounselors } = this.state
             const options = {
                 key: "rzp_test_RzYQGECWiji4Ln", // change when making live
                 currency: "INR",
@@ -85,9 +97,11 @@ class Appointment extends React.Component {
                         let templateParams = {
                             from_name: userDetails.email,
                             to_name: userDetails.name,
-                            subject: "Appointment Booking Confirmation",
+                            subject: "Appointment Booking Confirmation | Academics360",
                             reply_to: "official.academic360@gmail.com",
-                            message: "Congratulations!! Your appointment has been booked."
+                            organiser: allCounselors.find(x => x.id === sessionDetails.organiser).data?.name,
+                            time: JSON.stringify(selectedDate),
+                            location: sessionDetails.link
                         }
                         emailjs.send('service_w2cbgtf', 'template_oevwn69', templateParams, 'x0yoXZhLLLAmkfimK')
                             .then(() => {
