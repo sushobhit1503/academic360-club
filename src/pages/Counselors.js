@@ -117,6 +117,7 @@ class Counselors extends React.Component {
             }).then(() => window.location.reload())
                 .catch(err => console.log(err.message))
         }
+        const disabled = !this.state.name || !this.state.phoneNumber || !this.state.email || !this.state.location || !this.state.linkedin || !this.state.description || !this.state.introduction
         const filteredArray = this.state.allCounselors.filter(user => user.data.name.toLowerCase().includes(this.state.searchedCounselor.toLowerCase()))
         return (
             <div className="px-xl-5 px-3 py-3" >
@@ -272,7 +273,7 @@ class Counselors extends React.Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={submitProfile} color="success">
+                        <Button disabled={disabled} onClick={submitProfile} color="success">
                             Submit
                         </Button>
                     </ModalFooter>

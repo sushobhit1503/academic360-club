@@ -81,6 +81,7 @@ class Session extends React.Component {
             }).then(() => window.location.reload())
                 .catch(err => console.log(err.message))
         }
+        const disabled = !this.state.name || !this.state.organiser || !this.state.actualPrice || !this.state.discountedPrice || !this.state.time || !this.state.link
         const filteredArray = this.state.allSessions.filter(user => user.data.name.toLowerCase().includes(this.state.searchedSession.toLowerCase()))
         return (
             <div>
@@ -236,7 +237,7 @@ class Session extends React.Component {
                             </div>
                         </ModalBody>
                         <ModalFooter>
-                            <Button onClick={createSession} color="success">
+                            <Button disabled={disabled} onClick={createSession} color="success">
                                 Submit
                             </Button>
                         </ModalFooter>
