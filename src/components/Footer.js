@@ -19,6 +19,13 @@ class Footer extends React.Component {
         }
 
         const onSubmit = () => {
+            const { email } = this.state
+            if (!email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+                this.setState({ submitMessage: "Please enter a valid email id", messageColor: "#DB4437" })
+                setTimeout(() => {
+                    this.setState({ submitMessage: "" })
+                }, 3000)
+            }
             firestore.collection("newsletter").doc().set({
                 email: this.state.email,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -44,7 +51,7 @@ class Footer extends React.Component {
                         <div style={{ color: this.state.messageColor, fontWeight: "bold" }}>
                             {this.state.submitMessage}
                         </div>
-                        <Button onClick={onSubmit} className="bg-primary button-submit mt-3">
+                        <Button disabled={!this.state.email} onClick={onSubmit} className="bg-primary button-submit mt-3">
                             Submit
                         </Button>
                     </div>

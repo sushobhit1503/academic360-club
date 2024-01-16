@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { firestore } from "../config";
 import Session from "../components/Session";
+import { Tooltip } from "reactstrap";
 
 const CounselorIntro = () => {
     const { id } = useParams()
     const [counselor, setCounselor] = useState({})
     const [sessions, setSessions] = useState([])
+    const [isOpen, setOpen] = useState(false)
     useEffect(() => {
         firestore.collection("counselors").doc(id).get().then(document => {
             setCounselor(document.data())
@@ -33,9 +35,16 @@ const CounselorIntro = () => {
                     </div>
                     <div className="col-12 col-md-8">
                         <div className="h4 mb-3">About Me</div>
-                        <a target="_blank" href={counselor.linkedin} className="mb-3 linkedin-icon">
+                        <a target="_blank"  id="TooltipExample" href={counselor.linkedin} className="mb-3 linkedin-icon">
                             <i className="fa fa-linkedin"></i>
                         </a>
+                        <Tooltip
+                            isOpen={isOpen}
+                            target="TooltipExample"
+                            toggle={() => setOpen(!isOpen)}
+                        >
+                            Linkedin Profiles
+                        </Tooltip>
                         <div className="mt-3">
                             {counselor.introduction}
                         </div>

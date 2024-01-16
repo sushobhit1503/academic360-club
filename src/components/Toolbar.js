@@ -60,11 +60,11 @@ class Toolbar extends React.Component {
                             </NavItem>
                         </Nav>
                         {localStorage.getItem("uid") ?
-                            <NavbarText>
+                            <NavbarText className="d-flex align-items-center">
                                 <span className='text-primary me-3'>
                                 Hi, {this.state.userDetails?.name?.split(" ")[0]}
                                 </span>
-                                <Button onClick={() => { localStorage.removeItem("uid"); window.location.reload() }} className={`button-login ${this.state.activeClassButton} mb-3 mb-md-0`}>
+                                <Button onClick={() => { localStorage.removeItem("uid"); window.location.href = "/" }} className={`button-login ${this.state.activeClassButton} mb-3 mb-md-0`}>
                                     Logout
                                 </Button>
                             </NavbarText> :

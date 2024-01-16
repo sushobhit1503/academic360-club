@@ -135,7 +135,7 @@ class Appointment extends React.Component {
             <div style={{ paddingTop: "120px", paddingBottom: "75px" }} className="main-container">
                 <div className="row row-cols-1 row-cols-md-2 g-3 mb-3">
                     <div className="col-12 col-md-8">
-                        <div className="h5 ms-3">Select Date and Time:</div>
+                        <div className="h5 ms-3">Schedule your appointment</div>
                         <ScheduleMeeting
                             borderRadius={10}
                             primaryColor="#052778"

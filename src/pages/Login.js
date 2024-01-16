@@ -16,8 +16,10 @@ class Login extends React.Component {
             email: "",
             isLoading: false,
             result: "",
-            error: "",
-            timer: 30
+            submitMessage: "",
+            messageColor: "",
+            timer: 30,
+            recaptcha: {}
         }
     }
     render() {
@@ -34,27 +36,42 @@ class Login extends React.Component {
         }
 
         const checkUserExist = () => {
-            const { phoneNumber, pageState } = this.state
+            const { phoneNumber, pageState, email } = this.state
             firestore.collection("users").where("phoneNumber", "==", phoneNumber).get().then(result => {
                 if (pageState === "register" && result.docs.length !== 0) {
-                    this.setState({ error: "User already exist. Please login" })
+                    this.setState({ submitMessage: "User already exists. Please login", messageColor: "#DB4437" })
+                    setTimeout(() => {
+                        this.setState({ submitMessage: "" })
+                    }, 3000)
                 }
                 else if (pageState === "login" && result.docs.length === 0) {
-                    this.setState({ error: "User does not exist. Please register" })
+                    this.setState({ submitMessage: "User does not exist. Please register", messageColor: "#DB4437" })
+                    setTimeout(() => {
+                        this.setState({ submitMessage: "" })
+                    }, 3000)
+                }
+                else if (pageState === "register" && !email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+                    this.setState ({submitMessage: "Please enter a valid email id", messageColor: "#DB4437"})
+                    setTimeout(() => {
+                        this.setState({ submitMessage: "" })
+                    }, 3000)
                 }
                 else {
-                    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                    const recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
                         "size": "invisible",
-                        "callback": (response) => { 
+                        "callback": (response) => {
+                            this.setState({ recaptcha }, () => {
+                                console.log(this.state.recaptcha)
+                                firebase.auth().signInWithPhoneNumber(("+91" + this.state.phoneNumber), this.state.recaptcha)
+                                    .then((confirmationResult) => {
+                                        this.setState({ result: confirmationResult, otpHidden: false })
+                                    }).catch((error) => {
+                                        console.log(error.message);
+                                    });
+                            })
                         }
                     });
-                    let appVerifier = window.recaptchaVerifier
-                    firebase.auth().signInWithPhoneNumber(("+91" + this.state.phoneNumber), appVerifier)
-                        .then((confirmationResult) => {
-                            this.setState({ result: confirmationResult, otpHidden: false })
-                        }).catch((error) => {
-                            console.log(error.message);
-                        });
+
                 }
             })
         }
@@ -79,19 +96,27 @@ class Login extends React.Component {
             }).catch(err => console.log(err.message))
         }
         const resendOTP = () => {
-            window.recaptchaVerifier.clear()
-            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                "size": "invisible",
-                "callback": (response) => { }
-            });
-            let appVerifier = window.recaptchaVerifier
-            firebase.auth().signInWithPhoneNumber(("+91" + this.state.phoneNumber), appVerifier)
-                .then((confirmationResult) => {
-                    this.setState({ result: confirmationResult, otpHidden: false })
-                }).catch((error) => {
-                    console.log(error.message);
+            this.setState({ recaptcha: {} }, () => {
+                const recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                    "size": "invisible",
+                    "callback": (response) => {
+                        this.setState({ recaptcha }, () => {
+                            console.log(this.state.recaptcha)
+                            firebase.auth().signInWithPhoneNumber(("+91" + this.state.phoneNumber), this.state.recaptcha)
+                                .then((confirmationResult) => {
+                                    this.setState({ result: confirmationResult, otpHidden: false })
+                                }).catch((error) => {
+                                    console.log(error.message);
+                                });
+                        })
+                    }
                 });
+            })
+
+
         }
+        if (localStorage.getItem("uid"))
+            window.location.href = "/"
         return (
             <div className="login-background">
                 <div className="main-container py-5 col-12 col-md-6 m-auto">
@@ -111,7 +136,7 @@ class Login extends React.Component {
                                     </div>
                                     {this.state.otpHidden &&
                                         <div>
-                                            <Button id="otp-button" onClick={checkUserExist} className="button-submit bg-primary mb-3">
+                                            <Button disabled={!this.state.phoneNumber} id="otp-button" onClick={checkUserExist} className="button-submit bg-primary mb-3">
                                                 Get OTP
                                             </Button>
                                         </div>}
@@ -126,11 +151,13 @@ class Login extends React.Component {
                                             </div>
                                         </div>}
                                     {!this.state.otpHidden &&
-                                        <Button onClick={loginSubmit} className="button-submit bg-primary">
+                                        <Button disabled={!this.state.otp} onClick={loginSubmit} className="button-submit bg-primary">
                                             Login
                                         </Button>}
-                                    <div className="my-3">{this.state.error}</div>
-                                    <div className="text-center">Don't have an account? <a onClick={changePageState} className="text-decoration-underline cursor">Click Here</a></div>
+                                    <div className="my-3" style={{ color: this.state.messageColor, fontWeight: "bold" }}>
+                                        {this.state.submitMessage}
+                                    </div>
+                                    <div className="text-center">Don't have an account? <a href="#" onClick={changePageState} className="text-decoration-underline cursor">Click Here</a></div>
                                 </div>}
                             {this.state.pageState === "register" &&
                                 <div>
@@ -154,7 +181,7 @@ class Login extends React.Component {
                                     </div>
                                     {this.state.otpHidden &&
                                         <div>
-                                            <Button id="otp-buttton" onClick={checkUserExist} className="button-submit bg-primary mb-3">
+                                            <Button disabled={!this.state.name || !this.state.email || !this.state.phoneNumber} id="otp-buttton" onClick={checkUserExist} className="button-submit bg-primary mb-3">
                                                 Get OTP
                                             </Button>
                                         </div>}
@@ -167,11 +194,13 @@ class Login extends React.Component {
                                             <div className="text-end mb-3">Resend the OTP in {this.state.timer} sec</div>
                                         </div>}
                                     {!this.state.otpHidden &&
-                                        <Button onClick={registerSubmit} className="button-submit bg-primary">
+                                        <Button disabled={!this.state.otp} onClick={registerSubmit} className="button-submit bg-primary">
                                             Register
                                         </Button>}
-                                    <div className="my-3">{this.state.error}</div>
-                                    <div className="text-center">Already a user? <a onClick={changePageState} className="text-decoration-underline cursor">Click Here</a></div>
+                                    <div className="my-3" style={{ color: this.state.messageColor, fontWeight: "bold" }}>
+                                        {this.state.submitMessage}
+                                    </div>
+                                    <div className="text-center">Already a user? <a href="#" onClick={changePageState} className="text-decoration-underline cursor">Click Here</a></div>
                                 </div>}
                         </CardBody>
                     </Card>

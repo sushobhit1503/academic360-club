@@ -17,7 +17,8 @@ class Home extends React.Component {
             phoneNumber: "",
             message: "",
             submitMessage: "",
-            messageColor: ""
+            messageColor: "",
+            characters: 500
         }
     }
     componentDidMount () {
@@ -37,34 +38,47 @@ class Home extends React.Component {
 
         const onSubmit = () => {
             const {name, email, message, phoneNumber} = this.state
-            firestore.collection("contact").doc().set ({
-                name,
-                email,
-                message,
-                phoneNumber,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp ()
-            }).then(() => {
-                this.setState({ submitMessage: "Our team will contact you shortly.", messageColor: "#0F9D58" })
+            if (phoneNumber.length !== 10) {
+                this.setState ({submitMessage: "Please enter a valid phone number", messageColor: "#DB4437"})
+                
+            }
+                
+            if (!email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+                this.setState ({submitMessage: "Please enter a valid email id", messageColor: "#DB4437"})
                 setTimeout(() => {
                     this.setState({ submitMessage: "" })
                 }, 3000)
-                let templateParams = {
-                    from_name: this.state.name,
-                    phone_number: this.state.phoneNumber,
-                    subject: "Contact Query",
-                    reply_to: this.state.email,
-                    message: this.state.message
-                }
-                emailjs.send('service_w2cbgtf', 'template_cda84sm', templateParams, 'x0yoXZhLLLAmkfimK')
-                    .then(() => {
-                        window.location.reload()
-                    }).catch(err => console.log(err.message))
-            }).catch(err => {
-                this.setState({ submitMessage: "Some error occurred. Please try again after sometime.", messageColor: "#DB4437" })
-                setTimeout(() => {
-                    this.setState({ submitMessage: "" })
-                }, 3000)
-            })
+            }
+            else {
+                firestore.collection("contact").doc().set ({
+                    name,
+                    email,
+                    message,
+                    phoneNumber,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp ()
+                }).then(() => {
+                    this.setState({ submitMessage: "Our team will contact you shortly.", messageColor: "#0F9D58" })
+                    setTimeout(() => {
+                        this.setState({ submitMessage: "" })
+                    }, 3000)
+                    let templateParams = {
+                        from_name: this.state.name,
+                        phone_number: this.state.phoneNumber,
+                        subject: "Contact Query",
+                        reply_to: this.state.email,
+                        message: this.state.message
+                    }
+                    emailjs.send('service_w2cbgtf', 'template_cda84sm', templateParams, 'x0yoXZhLLLAmkfimK')
+                        .then(() => {
+                            window.location.reload()
+                        }).catch(err => console.log(err.message))
+                }).catch(err => {
+                    this.setState({ submitMessage: "Some error occurred. Please try again after sometime.", messageColor: "#DB4437" })
+                    setTimeout(() => {
+                        this.setState({ submitMessage: "" })
+                    }, 3000)
+                })
+            }
         }
         return (
             <div>
@@ -124,10 +138,10 @@ class Home extends React.Component {
                             <div className="d-block d-md-none align-items-center gap-3 justify-content-centercode .
                              h-100">
                                 <div className="mb-3">
-                                    <img src={Image1} className="who-image" />
+                                    <img src={Image1} className="who-image" alt="academics" />
                                 </div>
                                 <div>
-                                    <img src={Image2} className="who-image" />
+                                    <img src={Image2} className="who-image" alt="academics" />
                                 </div>
                             </div>
                         </div>
@@ -199,12 +213,12 @@ class Home extends React.Component {
 
                     </div>
                 </div>
-                <div className="bg-primary row row-cols-1 row-cols-xl-2 g-3 mt-3 mb-5 p-3">
+                <div className="bg-primary row row-cols-1 row-cols-xl-2 g-3 mt-3 mb-5">
                     <div className="col text-center">
                         <img src={Mission} alt="academics360" className="mission-image" />
                     </div>
                     <div className="col">
-                        <div className="h2 mb-3 text-primary px-3 px-md-5">Our Mission</div>
+                        <div className="h2 mb-3 text-primary">Our Mission</div>
                         <div className="text-primary px-3 px-md-5">
                             Academic 360 is more than just an educational consultancy firm.
                             We are a community of knowledge seekers and experts dedicated to fostering meaningful
@@ -230,14 +244,15 @@ class Home extends React.Component {
                         </div>
                         <div className="mb-1">
                             <Label>Message</Label>
-                            <textarea className="form-control" onChange={onChange} value={this.state.message} name="message" rows={8} placeholder="Enter your message">
+                            <textarea maxLength={500} className="form-control" onChange={onChange} value={this.state.message} name="message" rows={8} placeholder="Enter your message">
 
                             </textarea>
+                            <div style={{color: "var(--blue)"}}>{500 - this.state.message.length} characters left</div>
                         </div>
                         <div style={{ color: this.state.messageColor, fontWeight: "bold" }}>
                             {this.state.submitMessage}
                         </div>
-                        <Button onClick={onSubmit} className="bg-primary button-submit mt-3">
+                        <Button disabled={!this.state.email || !this.state.message || !this.state.name || !this.state.phoneNumber} onClick={onSubmit} className="bg-primary button-submit mt-3">
                             Submit
                         </Button>
                     </div>

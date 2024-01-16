@@ -5,8 +5,6 @@ import { firestore } from "../config";
 class Session extends React.Component {
     render() {
         const sessionViews = () => {
-            if (!localStorage.getItem("uid"))
-                window.location.href = "/login"
             firestore.collection("sessions").doc(this.props.id).update({
                 sessionViews: this.props.sessionViews + 1
             }).then(() => {
@@ -15,9 +13,8 @@ class Session extends React.Component {
         }
         return (
             <div className="h-100">
-                <Card className="cursor h-100" onClick={sessionViews}>
+                <Card className="session-card cursor h-100" onClick={sessionViews}>
                     <CardBody>
-                        <img />
                         <div className="h5 mb-1">{this.props.name}</div>
                         <div>
                             <span className="actual-price me-2"><i className="fa fa-inr me-1"></i>{this.props.actualPrice}</span>
