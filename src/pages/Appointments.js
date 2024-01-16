@@ -54,6 +54,7 @@ class Appointments extends React.Component {
             }).catch(err => console.log(err.message))
         }
         const deleteSession = (id) => {
+            window.confirm("Are you sure you want to delete?")
             firestore.collection("timeslots").doc(id).delete().then(() => window.location.reload()).catch(err => console.log(err.message))
         }
         return (
@@ -111,6 +112,10 @@ class Appointments extends React.Component {
                         </tbody>
                     </Table>
                 </div>
+                {this.state.allAppointments.length === 0 &&
+                    <div className="text-center">
+                        No data to be displayed
+                    </div>}
                 <div className="d-block d-md-none">
                     {this.state.allAppointments.map(eachUser => {
                         return (
@@ -150,7 +155,7 @@ class Appointments extends React.Component {
                         <div className="mb-3">
                             <Label>Organiser Name</Label>
                             <select className="form-select" onChange={onChange} name="organiser" value={this.state.organiser}>
-                                <option>Select Organiser</option>
+                                <option value="">Select Organiser</option>
                                 {this.state.allCounselors.map(eachCounselor => {
                                     return (
                                         <option key={eachCounselor.id} value={eachCounselor.id}>{eachCounselor.data.name}</option>
@@ -168,7 +173,7 @@ class Appointments extends React.Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={createTimeSlot} color="success">
+                        <Button disabled={!this.state.organiser || !this.state.startTime || !this.state.endTime} onClick={createTimeSlot} color="success">
                             Submit
                         </Button>
                     </ModalFooter>

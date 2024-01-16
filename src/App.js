@@ -8,6 +8,7 @@ import Counselors from './pages/Counselors';
 import Session from './pages/Session';
 import Appointments from './pages/Appointments';
 import Queries from './pages/Queries';
+import Bookings from './pages/Bookings';
 
 class App extends React.Component {
   render () {
@@ -21,6 +22,7 @@ class App extends React.Component {
           <Route path="/sessions" exact element={<Session />} />
           <Route path="/appointments" exact element={<Appointments />} />
           <Route path="/queries" exact element={<Queries />} />
+          <Route path="/bookings" exact element={<Bookings />} />
         </Routes>
       </div>
     )

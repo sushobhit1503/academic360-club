@@ -1,5 +1,5 @@
 import React from "react";
-import { firestore, storage } from "../config";
+import { firestore } from "../config";
 import firebase from "../config";
 import { CardBody, Input, Table, Card, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
@@ -157,6 +157,10 @@ class Session extends React.Component {
                             </tbody>
                         </Table>
                     </div>
+                    {filteredArray.length === 0 &&
+                    <div className="text-center">
+                        No data to be displayed
+                    </div>}
                     <div className="d-block d-md-none">
                         {filteredArray.map(eachUser => {
                             return (

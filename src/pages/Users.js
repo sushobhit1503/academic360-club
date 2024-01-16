@@ -1,6 +1,6 @@
 import React from "react";
 import { firestore } from "../config";
-import { CardBody, Input, Table, Card, Label, Button } from "reactstrap";
+import { CardBody, Input, Table, Card, Label} from "reactstrap";
 
 class Users extends React.Component {
     constructor() {
@@ -70,9 +70,14 @@ class Users extends React.Component {
                                     </tr>
                                 )
                             })}
+
                         </tbody>
                     </Table>
                 </div>
+                {filteredArray.length === 0 &&
+                    <div className="text-center">
+                        No data to be displayed
+                    </div>}
                 <div className="d-block d-md-none">
                     {filteredArray.map(eachUser => {
                         return (

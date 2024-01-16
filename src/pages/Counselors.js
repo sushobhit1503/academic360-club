@@ -1,7 +1,7 @@
 import React from "react";
 import { firestore, storage } from "../config";
 import firebase from "../config";
-import { CardBody, Input, Table, Card, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter, InputGroupText } from "reactstrap";
+import { CardBody, Input, Table, Card, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 class Counselors extends React.Component {
     constructor() {
@@ -219,6 +219,10 @@ class Counselors extends React.Component {
                         )
                     })}
                 </div>
+                {filteredArray.length === 0 &&
+                    <div className="text-center">
+                        No data to be displayed
+                    </div>}
                 <Modal isOpen={this.state.isModal} toggle={() => this.setState({ isModal: false })}>
                     <ModalHeader toggle={() => this.setState({ isModal: false })}>Add Counselor Profile</ModalHeader>
                     <ModalBody>
@@ -307,7 +311,7 @@ class Counselors extends React.Component {
                         <div className="mb-3">
                             <Label>Profile Picture</Label>
                             <Input id="fileInput" onChange={fileChange} name="profilePicture" type="file" />
-                            <div style={{color: "#DB4437"}}>
+                            <div style={{ color: "#DB4437" }}>
                                 Upload picture only if you want to change. The previous photo is already stored.
                             </div>
                         </div>

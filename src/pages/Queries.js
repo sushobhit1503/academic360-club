@@ -62,6 +62,10 @@ class Queries extends React.Component {
                         </tbody>
                     </Table>
                 </div>
+                {this.state.allQueries.length === 0 &&
+                    <div className="text-center">
+                        No data to be displayed
+                    </div>}
                 <div className="d-block d-md-none">
                     {this.state.allQueries.map(eachUser => {
                         return (
