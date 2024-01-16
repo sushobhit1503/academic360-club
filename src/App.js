@@ -9,6 +9,8 @@ import Session from './pages/Session';
 import Appointments from './pages/Appointments';
 import Queries from './pages/Queries';
 import Bookings from './pages/Bookings';
+import SecurityPage from './pages/SecurityPage';
+import PrivateRoute from './components/PrivateRoute';
 
 class App extends React.Component {
   render () {
@@ -16,13 +18,14 @@ class App extends React.Component {
       <div>
         <Toolbar />
         <Routes>
-          <Route path="/users" exact element={<Users />} />
-          <Route path="/" exact element={<Home />} />
-          <Route path="/counselors" exact element={<Counselors />} />
-          <Route path="/sessions" exact element={<Session />} />
-          <Route path="/appointments" exact element={<Appointments />} />
-          <Route path="/queries" exact element={<Queries />} />
-          <Route path="/bookings" exact element={<Bookings />} />
+          <Route path="/users" exact element={<PrivateRoute><Users /></PrivateRoute>} />
+          <Route path="/" exact element={<PrivateRoute><Home /></PrivateRoute>} />
+          <Route path="/counselors" exact element={<PrivateRoute><Counselors /></PrivateRoute>} />
+          <Route path="/sessions" exact element={<PrivateRoute><Session /></PrivateRoute>} />
+          <Route path="/appointments" exact element={<PrivateRoute><Appointments /></PrivateRoute>} />
+          <Route path="/queries" exact element={<PrivateRoute><Queries /></PrivateRoute>} />
+          <Route path="/bookings" exact element={<PrivateRoute><Bookings /></PrivateRoute>} />
+          <Route path="/login" exact element={<SecurityPage />} />
         </Routes>
       </div>
     )
