@@ -129,18 +129,29 @@ class Bookings extends React.Component {
                         return (
                             <Card className="mb-3">
                                 <CardBody>
-                                    <div className="h3 mb-3">{eachUser.name}</div>
+                                    <div className="h3 mb-3">{this.state.allSessions.find(x => x.id === eachUser.data?.sessionId).data?.name}</div>
                                     <div className="mb-3">
-                                        <Label className="mb-0">Phone Number</Label>
-                                        <div className="fw-bold">{eachUser.phoneNumber}</div>
+                                        <Label className="mb-0">Session Name</Label>
+                                        <div className="fw-bold">{this.state.allSessions.find(x => x.id === eachUser.data?.sessionId).data?.name}</div>
+                                    </div>
+                                    <div className="d-flex justify-content-between mb-3">
+                                        <div>
+                                            <Label className="mb-0">Booking Time</Label>
+                                            <div className="fw-bold">
+                                                <Moment format="DD-MM-YYYY HH:mm">
+                                                    {eachUser.data.bookingTime}
+                                                </Moment>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <Label className="mb-0">Duration (mins)</Label>
+                                            <div className="fw-bold">{eachUser.data.sessionTime}</div>
+                                        </div>
                                     </div>
                                     <div className="mb-3">
-                                        <Label className="mb-0">Email Id</Label>
-                                        <div className="fw-bold">{eachUser.email}</div>
+                                        <Label className="mb-0">Payment Id</Label>
+                                        <div className="fw-bold">{eachUser.data.paymentId}</div>
                                     </div>
-                                    {/* <Button className="w-100" color="primary">
-                                View Details
-                            </Button> */}
                                 </CardBody>
                             </Card>
                         )
