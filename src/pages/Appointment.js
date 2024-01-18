@@ -3,7 +3,7 @@ import { firestore } from "../config";
 import firebase from "../config";
 import { ScheduleMeeting, timeSlotDifference } from 'react-schedule-meeting';
 import withRouter from "../components/withRouter"
-import { Button, Collapse, Input } from "reactstrap";
+import { Button, Card, CardBody, Collapse, Input } from "reactstrap";
 import emailjs from "@emailjs/browser"
 import Moment from "react-moment";
 import { bookedSlots, finalSlots } from "../util/bookedSlots";
@@ -63,7 +63,7 @@ class Appointment extends React.Component {
             this.setState({ bookedTimeSlots: temp })
         })
         firestore.collection("sessions").doc(this.props.params.sessionId).get().then(document => {
-            this.setState({ sessionDetails: document.data(), sessionId: this.props.params.sessionId }, () => {
+            this.setState({ sessionDetails: document.data(), sessionId: this.props.params.sessionId, priceToPay: document.data().discountedPrice }, () => {
                 firestore.collection("timeslots").where("organiser", "==", this.state.sessionDetails.organiser).get().then(Snapshot => {
                     let temp = []
                     Snapshot.forEach(document => {
@@ -97,7 +97,7 @@ class Appointment extends React.Component {
             const options = {
                 key: "rzp_test_RzYQGECWiji4Ln", // change when making live
                 currency: "INR",
-                amount: this.state.priceToPay * 100,
+                amount: (parseInt(this.state.priceToPay) + 99) * 100,
                 name: "Academics 360",
                 description: `Payment for ${this.state.sessionDetails.name}`,
                 image: "", // put image url here
@@ -154,24 +154,24 @@ class Appointment extends React.Component {
             this.setState({ [name]: value })
         }
         const checkCoupon = () => {
-            const {couponCode, allCoupons} = this.state
+            const { couponCode, allCoupons } = this.state
             const couponExist = allCoupons.find(obj => obj.data.code === couponCode)
             if (!couponExist) {
-                this.setState ({couponMessage: "The coupon does not exist", couponColor: "#DB4437"})
+                this.setState({ couponMessage: "The coupon does not exist", couponColor: "#DB4437" })
             }
             if (couponExist) {
-                const checkValidityCoupon = checkValidity (couponExist.data, this.state.sessionDetails.discountedPrice)
+                const checkValidityCoupon = checkValidity(couponExist.data, this.state.sessionDetails.discountedPrice)
                 if (!checkValidityCoupon.status)
-                    this.setState ({couponMessage: "The coupon has expired", couponColor: "#DB4437"})
+                    this.setState({ couponMessage: "The coupon has expired", couponColor: "#DB4437" })
                 else {
-                    this.setState ({couponMessage: `Coupon code applied successfully. Rs. ${checkValidityCoupon.amountSaved} saved`, couponColor: "#0F9D58", priceToPay: checkValidityCoupon.value})
+                    this.setState({ couponMessage: `Coupon code applied successfully. Rs. ${checkValidityCoupon.amountSaved} saved`, couponColor: "#0F9D58", priceToPay: checkValidityCoupon.value })
                 }
             }
         }
         return (
             <div style={{ paddingTop: "120px", paddingBottom: "75px" }} className="main-container">
                 <div className="row row-cols-1 row-cols-md-2 g-3 mb-3">
-                    <div className="col-12 col-md-8">
+                    <div className="col-12 col-md-7">
                         <div className="h5 ms-3">Schedule your appointment</div>
                         <ScheduleMeeting
                             borderRadius={10}
@@ -182,47 +182,79 @@ class Appointment extends React.Component {
                                 () => console.log(this.state.selectedDate))}
                         />
                     </div>
-                    <div className="col-12 col-md-4">
-                        <div className="h3">{this.state.sessionDetails.name}</div>
-                        <div className="d-flex gap-3 align-items-center mb-3">
-                            <i style={{ width: "20px" }} className="fa fa-calendar session-icons"></i>
-                            <div className="fw-bold">
-                                {this.state.selectedDate.startTime ?
-                                    <Moment format="D MMM YYYY HH : mm">
-                                        {this.state.selectedDate.startTime}
-                                    </Moment> : "-- : --"}
-                            </div>
-                        </div>
-                        <div className="d-flex gap-3 align-items-center mb-3">
-                            <i style={{ width: "20px" }} className="fa fa-clock-o session-icons"></i>
-                            <div className="fw-bold">{this.state.sessionDetails.time} minutes</div>
-                        </div>
-                        <div className="d-flex gap-3 align-items-center mb-3">
-                            <i style={{ width: "20px" }} className="fa fa-map-marker session-icons"></i>
-                            <div className="fw-bold">Online meeting link will be shared after payment.</div>
-                        </div>
-                        <div className="mb-3">
-                            <a onClick={() => { this.setState({ isCollapseOpen: !this.state.isCollapseOpen }) }}
-                                className="text-secondary text-decoration-none mb-3" href="#">
-                                Have any coupon code?
-                            </a>
-                            <Collapse isOpen={this.state.isCollapseOpen}>
-                                <div className="d-flex justify-content-between gap-3 align-items-center">
-                                    <Input onChange={onChange} name="couponCode" value={this.state.couponCode} placeholder="Enter coupon code" />
-                                    <div onClick={checkCoupon} className="text-secondary fw-bold cursor">
-                                        Check
+                    <div className="col-12 col-md-5">
+                        <Card>
+                            <CardBody>
+                                <div className="h5">{this.state.sessionDetails.name}</div>
+                                <div className="d-flex justify-content-between mb-1 flex-md-row flex-column">
+                                    <div>
+                                        <i style={{ width: "20px" }} className="fa fa-calendar session-icons"></i> Session Date
+                                    </div>
+                                    <div className="fw-bold">
+                                        {this.state.selectedDate.startTime ?
+                                            <Moment format="D MMM YYYY HH:mm A">
+                                                {this.state.selectedDate.startTime}
+                                            </Moment> : "-- : --"}
                                     </div>
                                 </div>
-                            </Collapse>
-                            <div style={{ color: `${this.state.couponColor}` }}>
-                                {this.state.couponMessage}
-                            </div>
-                        </div>
-                        <div>
-                            <Button disabled={this.state.selectedDate === ""} onClick={showRazorpay} className="button-submit" color="success">
-                                Book Now
-                            </Button>
-                        </div>
+                                <div className="d-flex justify-content-between align-items-center mb-1 flex-md-row flex-column">
+                                    <div>
+                                        <i style={{ width: "20px" }} className="fa fa-clock-o session-icons"></i> Session Time
+                                    </div>
+                                    <div className="fw-bold">{this.state.sessionDetails.time} minutes</div>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center pb-3 border-bottom flex-md-row flex-column">
+                                    <div>
+                                        <i style={{ width: "20px" }} className="fa fa-map-marker session-icons"></i> Session Link
+                                    </div>
+                                    <div className="fw-bold">Meeting link will be shared after payment.</div>
+                                </div>
+                                <div className="text-end mt-3">
+                                    <div
+                                        className="text-secondary text-decoration-none mb-1">
+                                        Have any coupon code?
+                                    </div>
+                                    <div className="d-flex justify-content-end gap-3 align-items-center">
+                                        <div onClick={checkCoupon} className="text-secondary fw-bold cursor">
+                                            Apply
+                                        </div>
+                                        <Input style={{ width: "250px" }} onChange={onChange} name="couponCode" value={this.state.couponCode} placeholder="Enter coupon code" />
+                                    </div>
+                                    <div className="mb-3" style={{ color: `${this.state.couponColor}` }}>
+                                            {this.state.couponMessage}
+                                        </div>
+                                    <div className="d-flex justify-content-end gap-3 mb-1 align-items-center">
+                                        <div>
+                                            Session Fees
+                                        </div>
+                                        <div className="fw-bold">
+                                            Rs. {this.state.priceToPay}
+                                        </div>
+                                    </div>
+                                    <div className="d-flex justify-content-end gap-3 mb-4 align-items-center">
+                                        <div>
+                                            Convenience Fees
+                                        </div>
+                                        <div className="fw-bold">
+                                            Rs. 99
+                                        </div>
+                                    </div>
+                                    <div className="d-flex justify-content-end gap-3 align-items-center">
+                                        <div>
+                                            Total
+                                        </div>
+                                        <div className="fw-bold">
+                                            Rs. {parseInt(this.state.priceToPay) + 99}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Button disabled={this.state.selectedDate === ""} onClick={showRazorpay} color="success">
+                                            Pay & Book Now
+                                        </Button>
+                                    </div>
+                                </div>
+                            </CardBody>
+                        </Card>
                     </div>
                 </div>
             </div>
