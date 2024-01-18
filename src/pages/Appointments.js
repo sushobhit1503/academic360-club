@@ -169,7 +169,7 @@ class Appointments extends React.Component {
                         </div>
                         <div className="mb-3">
                             <Label>End Time</Label>
-                            <Input placeholder="Enter end time" onChange={onChange} value={this.state.endTime} name="endTime" type="datetime-local" />
+                            <Input max="2099-12-31T23:59" placeholder="Enter end time" onChange={onChange} value={this.state.endTime} name="endTime" type="datetime-local" />
                         </div>
                     </ModalBody>
                     <ModalFooter>
