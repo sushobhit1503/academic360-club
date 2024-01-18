@@ -3,10 +3,11 @@ import { firestore } from "../config";
 import firebase from "../config";
 import { ScheduleMeeting, timeSlotDifference } from 'react-schedule-meeting';
 import withRouter from "../components/withRouter"
-import { Button } from "reactstrap";
+import { Button, Collapse, Input } from "reactstrap";
 import emailjs from "@emailjs/browser"
 import Moment from "react-moment";
 import { bookedSlots, finalSlots } from "../util/bookedSlots";
+import { checkValidity } from "../util/checkCoupon";
 
 class Appointment extends React.Component {
     constructor() {
@@ -19,7 +20,13 @@ class Appointment extends React.Component {
             availableTimeSlots: [],
             selectedDate: "",
             userDetails: {},
-            allCounselors: []
+            allCounselors: [],
+            allCoupons: [],
+            isCollapseOpen: false,
+            couponMessage: "",
+            couponColor: "",
+            couponCode: "",
+            priceToPay: 0
         }
     }
     componentDidMount() {
@@ -28,21 +35,32 @@ class Appointment extends React.Component {
         })
         firestore.collection("counselors").get().then(Snapshot => {
             let temp = []
-            Snapshot.forEach (document => {
+            Snapshot.forEach(document => {
                 let obj = {
                     id: document.id,
                     data: document.data()
                 }
-                temp.push (obj)
+                temp.push(obj)
             })
-            this.setState ({allCounselors: temp})
+            this.setState({ allCounselors: temp })
+        })
+        firestore.collection("coupons").get().then(Snapshot => {
+            let temp = []
+            Snapshot.forEach(document => {
+                let obj = {
+                    id: document.id,
+                    data: document.data()
+                }
+                temp.push(obj)
+            })
+            this.setState({ allCoupons: temp })
         })
         firestore.collection("bookings").where("sessionId", "==", this.props.params.sessionId).get().then(Snapshot => {
             let temp = []
             Snapshot.forEach(document => {
                 temp.push(document.data())
             })
-            this.setState({ bookedTimeSlots: temp }, () => console.log(this.state.bookedTimeSlots))
+            this.setState({ bookedTimeSlots: temp })
         })
         firestore.collection("sessions").doc(this.props.params.sessionId).get().then(document => {
             this.setState({ sessionDetails: document.data(), sessionId: this.props.params.sessionId }, () => {
@@ -79,7 +97,7 @@ class Appointment extends React.Component {
             const options = {
                 key: "rzp_test_RzYQGECWiji4Ln", // change when making live
                 currency: "INR",
-                amount: this.state.sessionDetails.discountedPrice * 100,
+                amount: this.state.priceToPay * 100,
                 name: "Academics 360",
                 description: `Payment for ${this.state.sessionDetails.name}`,
                 image: "", // put image url here
@@ -131,6 +149,25 @@ class Appointment extends React.Component {
                 document.body.appendChild(script);
             });
         };
+        const onChange = (e) => {
+            const { name, value } = e.target
+            this.setState({ [name]: value })
+        }
+        const checkCoupon = () => {
+            const {couponCode, allCoupons} = this.state
+            const couponExist = allCoupons.find(obj => obj.data.code === couponCode)
+            if (!couponExist) {
+                this.setState ({couponMessage: "The coupon does not exist", couponColor: "#DB4437"})
+            }
+            if (couponExist) {
+                const checkValidityCoupon = checkValidity (couponExist.data, this.state.sessionDetails.discountedPrice)
+                if (!checkValidityCoupon.status)
+                    this.setState ({couponMessage: "The coupon has expired", couponColor: "#DB4437"})
+                else {
+                    this.setState ({couponMessage: `Coupon code applied successfully. Rs. ${checkValidityCoupon.amountSaved} saved`, couponColor: "#0F9D58", priceToPay: checkValidityCoupon.value})
+                }
+            }
+        }
         return (
             <div style={{ paddingTop: "120px", paddingBottom: "75px" }} className="main-container">
                 <div className="row row-cols-1 row-cols-md-2 g-3 mb-3">
@@ -163,6 +200,23 @@ class Appointment extends React.Component {
                         <div className="d-flex gap-3 align-items-center mb-3">
                             <i style={{ width: "20px" }} className="fa fa-map-marker session-icons"></i>
                             <div className="fw-bold">Online meeting link will be shared after payment.</div>
+                        </div>
+                        <div className="mb-3">
+                            <a onClick={() => { this.setState({ isCollapseOpen: !this.state.isCollapseOpen }) }}
+                                className="text-secondary text-decoration-none mb-3" href="#">
+                                Have any coupon code?
+                            </a>
+                            <Collapse isOpen={this.state.isCollapseOpen}>
+                                <div className="d-flex justify-content-between gap-3 align-items-center">
+                                    <Input onChange={onChange} name="couponCode" value={this.state.couponCode} placeholder="Enter coupon code" />
+                                    <div onClick={checkCoupon} className="text-secondary fw-bold cursor">
+                                        Check
+                                    </div>
+                                </div>
+                            </Collapse>
+                            <div style={{ color: `${this.state.couponColor}` }}>
+                                {this.state.couponMessage}
+                            </div>
                         </div>
                         <div>
                             <Button disabled={this.state.selectedDate === ""} onClick={showRazorpay} className="button-submit" color="success">

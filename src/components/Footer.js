@@ -55,7 +55,7 @@ class Footer extends React.Component {
                             Submit
                         </Button>
                     </div>
-                    <div className="col text-center">
+                    <div className="col">
                         <div className="h3 mb-3">Follow our Instagram Channel</div>
                         <a className="footer-social-media" href="https://www.instagram.com/academic360/"><i className="fa fa-instagram"></i></a>
                     </div>
