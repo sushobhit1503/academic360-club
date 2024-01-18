@@ -11,6 +11,7 @@ import Queries from './pages/Queries';
 import Bookings from './pages/Bookings';
 import SecurityPage from './pages/SecurityPage';
 import PrivateRoute from './components/PrivateRoute';
+import Coupon from './pages/Coupon';
 
 class App extends React.Component {
   render () {
@@ -25,6 +26,7 @@ class App extends React.Component {
           <Route path="/appointments" exact element={<PrivateRoute><Appointments /></PrivateRoute>} />
           <Route path="/queries" exact element={<PrivateRoute><Queries /></PrivateRoute>} />
           <Route path="/bookings" exact element={<PrivateRoute><Bookings /></PrivateRoute>} />
+          <Route path="/coupons" exact element={<PrivateRoute><Coupon /></PrivateRoute>} />
           <Route path="/login" exact element={<SecurityPage />} />
         </Routes>
       </div>

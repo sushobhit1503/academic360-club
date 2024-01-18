@@ -31,13 +31,16 @@ class Toolbar extends React.Component {
                                 <NavLink href="/sessions">Sessions</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/appointments">Appointments</NavLink>
+                                <NavLink href="/appointments">Free Slots</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="/queries">Queries</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="/bookings">Bookings</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="/coupons">Coupons</NavLink>
                             </NavItem>
                         </Nav>
                     </Collapse>
