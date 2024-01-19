@@ -42,10 +42,10 @@ class Footer extends React.Component {
             })
         }
         return (
-            <div>
-                <div className="row row-cols-1 row-col-md-2 row-cols-xl-3 g-5 bg-secondary px-md-5 p-3">
-                    <div className="col">
-                        <div className="h3 mb-3">Subscribe to our newsletter</div>
+            <div className="bg-secondary p-md-5 pb-0 pb-md-0 p-3">
+                <div className="row row-cols-1 row-col-md-2 row-cols-xl-3">
+                    <div className="col mb-5">
+                        <div className="h3 mb-5">Subscribe to our newsletter</div>
                         <Label>Email Address</Label>
                         <Input className="mb-1" placeholder="Your email address" onChange={onChange} name="email" value={this.state.email} />
                         <div style={{ color: this.state.messageColor, fontWeight: "bold" }}>
@@ -55,7 +55,7 @@ class Footer extends React.Component {
                             Submit
                         </Button>
                     </div>
-                    <div className="col">
+                    <div className="col mb-5">
                         <div className="h3 mb-3">Follow our Instagram Channel</div>
                         <a className="footer-social-media" href="https://www.instagram.com/academic360/"><i className="fa fa-instagram"></i></a>
                     </div>

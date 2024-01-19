@@ -13,6 +13,7 @@ import CounselorIntro from './pages/CounselorIntro';
 import Appointment from './pages/Appointment';
 import PrivateRoute from './components/PrivateRoute';
 import NotFound from './pages/NotFound';
+import Success from './pages/Success';
 
 class App extends React.Component {
   render() {
@@ -39,6 +40,7 @@ class App extends React.Component {
           <Route path='/refund' exact element={<Refund />} />
           <Route path='/terms' exact element={<Terms />} />
           <Route path='/login' exact element={<Login />} />
+          <Route path='/success' exact element={<Success />} />
           <Route path="*" element={<NotFound />}
           />
         </Routes>

@@ -43,7 +43,7 @@ class Toolbar extends React.Component {
         }
         return (
             <div>
-                <Navbar className={`${this.state.activeClassBar} position-fixed w-100 mobile-background`} expand="md" light style={{ zIndex: 3 }}>
+                <Navbar className={`${this.state.activeClassBar} position-fixed w-100 mobile-background p-0`} expand="md" light style={{ zIndex: 3 }}>
                     <NavbarBrand href="/">
                         <img src={Logo} className='toolbar-logo' alt='academics360' />
                     </NavbarBrand>

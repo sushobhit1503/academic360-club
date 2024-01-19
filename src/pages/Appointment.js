@@ -93,7 +93,7 @@ class Appointment extends React.Component {
                 "https://checkout.razorpay.com/v1/checkout.js"
             );
             if (!res) return;
-            const { userDetails, sessionId, selectedDate, sessionDetails, allCounselors } = this.state
+            const { userDetails, sessionId, selectedDate, sessionDetails, allCounselors, couponCode } = this.state
             const options = {
                 key: "rzp_test_RzYQGECWiji4Ln", // change when making live
                 currency: "INR",
@@ -112,6 +112,13 @@ class Appointment extends React.Component {
                         bookingTime: selectedDate.startTime.toISOString(),
                         sessionTime: parseInt(sessionDetails.time)
                     }).then(() => {
+                        firestore.collection("coupons").where("code", "==", couponCode).get().then(Snapshot => {
+                            Snapshot.forEach (document => {
+                                firestore.collection("coupons").doc(document.id).update ({
+                                    expiryCount: firebase.firestore.FieldValue.increment(-1)
+                                }).then (() => {}).catch (err => console.log(err.message))
+                            })
+                        })
                         let templateParams = {
                             from_name: userDetails.email,
                             to_name: userDetails.name,
@@ -123,7 +130,8 @@ class Appointment extends React.Component {
                         }
                         emailjs.send('service_w2cbgtf', 'template_oevwn69', templateParams, 'x0yoXZhLLLAmkfimK')
                             .then(() => {
-                                window.location.href = "/"
+                                localStorage.setItem ("success", true)
+                                window.location.href = "/success"
                             }).catch(err => console.log(err.message))
                     }).catch(err => console.log(err.message))
                 },
@@ -155,6 +163,7 @@ class Appointment extends React.Component {
         }
         const checkCoupon = () => {
             const { couponCode, allCoupons } = this.state
+            this.setState ({priceToPay: this.state.sessionDetails.discountedPrice})
             const couponExist = allCoupons.find(obj => obj.data.code === couponCode)
             if (!couponExist) {
                 this.setState({ couponMessage: "The coupon does not exist", couponColor: "#DB4437" })
@@ -169,61 +178,49 @@ class Appointment extends React.Component {
             }
         }
         return (
-            <div style={{ paddingTop: "120px", paddingBottom: "75px" }} className="main-container">
-                <div className="row row-cols-1 row-cols-md-2 g-3 mb-3">
-                    <div className="col-12 col-md-7">
-                        <div className="h5 ms-3">Schedule your appointment</div>
-                        <ScheduleMeeting
-                            borderRadius={10}
-                            primaryColor="#052778"
-                            eventDurationInMinutes={15}
-                            availableTimeslots={this.state.availableTimeSlots}
-                            onStartTimeSelect={(object) => this.setState({ selectedDate: object },
-                                () => console.log(this.state.selectedDate))}
-                        />
-                    </div>
-                    <div className="col-12 col-md-5">
-                        <Card>
-                            <CardBody>
-                                <div className="h5">{this.state.sessionDetails.name}</div>
-                                <div className="d-flex justify-content-between mb-1 flex-md-row flex-column">
-                                    <div>
-                                        <i style={{ width: "20px" }} className="fa fa-calendar session-icons"></i> Session Date
-                                    </div>
-                                    <div className="fw-bold">
-                                        {this.state.selectedDate.startTime ?
-                                            <Moment format="D MMM YYYY HH:mm A">
-                                                {this.state.selectedDate.startTime}
-                                            </Moment> : "-- : --"}
-                                    </div>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center mb-1 flex-md-row flex-column">
-                                    <div>
-                                        <i style={{ width: "20px" }} className="fa fa-clock-o session-icons"></i> Session Time
-                                    </div>
-                                    <div className="fw-bold">{this.state.sessionDetails.time} minutes</div>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center pb-3 border-bottom flex-md-row flex-column">
-                                    <div>
-                                        <i style={{ width: "20px" }} className="fa fa-map-marker session-icons"></i> Session Link
-                                    </div>
-                                    <div className="fw-bold">Meeting link will be shared after payment.</div>
-                                </div>
-                                <div className="text-end mt-3">
-                                    <div
-                                        className="text-secondary text-decoration-none mb-1">
-                                        Have any coupon code?
-                                    </div>
-                                    <div className="d-flex justify-content-end gap-3 align-items-center">
-                                        <div onClick={checkCoupon} className="text-secondary fw-bold cursor">
-                                            Apply
+            <div className="page-start">
+                <div className="main-container">
+                    <div className="row row-cols-1 row-cols-md-2 g-5 my-md-5 mt-3 mb-5">
+                        <div className="col-12 col-md-7">
+                            <div className="h5 ms-3">Schedule your appointment</div>
+                            <ScheduleMeeting
+                                borderRadius={10}
+                                primaryColor="#052778"
+                                eventDurationInMinutes={15}
+                                availableTimeslots={this.state.availableTimeSlots}
+                                onStartTimeSelect={(object) => this.setState({ selectedDate: object },
+                                    () => console.log(this.state.selectedDate))}
+                            />
+                        </div>
+                        <div className="col-12 col-md-5">
+                            <Card>
+                                <CardBody>
+                                    <div className="h5">{this.state.sessionDetails.name}</div>
+                                    <div className="d-flex justify-content-between mb-1 flex-md-row flex-column">
+                                        <div>
+                                            <i style={{ width: "20px" }} className="fa fa-calendar session-icons"></i> Session Date
                                         </div>
-                                        <Input style={{ width: "250px" }} onChange={onChange} name="couponCode" value={this.state.couponCode} placeholder="Enter coupon code" />
-                                    </div>
-                                    <div className="mb-3" style={{ color: `${this.state.couponColor}` }}>
-                                            {this.state.couponMessage}
+                                        <div className="fw-bold">
+                                            {this.state.selectedDate.startTime ?
+                                                <Moment format="D MMM YYYY HH:mm A">
+                                                    {this.state.selectedDate.startTime}
+                                                </Moment> : "-- : --"}
                                         </div>
-                                    <div className="d-flex justify-content-end gap-3 mb-1 align-items-center">
+                                    </div>
+                                    <div className="d-flex justify-content-between align-items-center mb-1 flex-md-row flex-column">
+                                        <div>
+                                            <i style={{ width: "20px" }} className="fa fa-clock-o session-icons"></i> Session Time
+                                        </div>
+                                        <div className="fw-bold">{this.state.sessionDetails.time} minutes</div>
+                                    </div>
+                                    <div className="d-flex justify-content-between align-items-center pb-5 border-bottom flex-md-row flex-column">
+                                        <div>
+                                            <i style={{ width: "20px" }} className="fa fa-map-marker session-icons"></i> Session Link
+                                        </div>
+                                        <div className="fw-bold">Meeting link will be shared after payment.</div>
+                                    </div>
+
+                                    <div className="d-flex justify-content-end gap-3 mb-1 mt-3 align-items-center">
                                         <div>
                                             Session Fees
                                         </div>
@@ -231,7 +228,7 @@ class Appointment extends React.Component {
                                             Rs. {this.state.priceToPay}
                                         </div>
                                     </div>
-                                    <div className="d-flex justify-content-end gap-3 mb-4 align-items-center">
+                                    <div className="d-flex justify-content-end gap-3 mb-5 align-items-center">
                                         <div>
                                             Convenience Fees
                                         </div>
@@ -239,22 +236,37 @@ class Appointment extends React.Component {
                                             Rs. 99
                                         </div>
                                     </div>
-                                    <div className="d-flex justify-content-end gap-3 align-items-center">
-                                        <div>
-                                            Total
+                                    <div className="mt-3">
+                                        <div
+                                            className="text-secondary text-decoration-none text-end mb-1">
+                                            Have any coupon code?
                                         </div>
-                                        <div className="fw-bold">
-                                            Rs. {parseInt(this.state.priceToPay) + 99}
+                                        <div className="d-flex justify-content-end gap-3 align-items-center">
+                                            <Input style={{ width: "175px" }} onChange={onChange} name="couponCode" value={this.state.couponCode} placeholder="Enter coupon code" />
+                                            <div onClick={checkCoupon} className="text-secondary fw-bold cursor">
+                                                Apply
+                                            </div>
+                                        </div>
+                                        <div className="mb-5 text-end" style={{ color: `${this.state.couponColor}` }}>
+                                            {this.state.couponMessage}
+                                        </div>
+                                        <div className="d-flex justify-content-end gap-3 align-items-center">
+                                            <div>
+                                                Total
+                                            </div>
+                                            <div className="fw-bold h4">
+                                                Rs. {parseInt(this.state.priceToPay) + 99}
+                                            </div>
+                                        </div>
+                                        <div className="d-flex justify-content-end">
+                                            <Button disabled={this.state.selectedDate === ""} onClick={showRazorpay} color="success">
+                                                Pay & Book Now
+                                            </Button>
                                         </div>
                                     </div>
-                                    <div>
-                                        <Button disabled={this.state.selectedDate === ""} onClick={showRazorpay} color="success">
-                                            Pay & Book Now
-                                        </Button>
-                                    </div>
-                                </div>
-                            </CardBody>
-                        </Card>
+                                </CardBody>
+                            </Card>
+                        </div>
                     </div>
                 </div>
             </div>
