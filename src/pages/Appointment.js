@@ -3,7 +3,7 @@ import { firestore } from "../config";
 import firebase from "../config";
 import { ScheduleMeeting, timeSlotDifference } from 'react-schedule-meeting';
 import withRouter from "../components/withRouter"
-import { Button, Card, CardBody, Collapse, Input } from "reactstrap";
+import { Button, Card, CardBody, Input } from "reactstrap";
 import emailjs from "@emailjs/browser"
 import Moment from "react-moment";
 import { bookedSlots, finalSlots } from "../util/bookedSlots";

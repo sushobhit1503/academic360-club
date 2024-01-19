@@ -30,7 +30,7 @@ const CounselorIntro = () => {
             <div className="my-5 main-container">
                 <div className="row row-cols-1 row-cols-md-2 g-3 mb-5">
                     <div className="col-12 col-md-4 text-center">
-                        <img src={counselor.profileUrl} className="counselor-picture mb-3" />
+                        <img src={counselor.profileUrl} className="counselor-picture mb-3" alt="academics" />
                         <div className="h4">{counselor.name}</div>
                     </div>
                     <div className="col-12 col-md-8">

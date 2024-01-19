@@ -100,7 +100,7 @@ class Privacy extends React.Component {
                     <div style={{ marginBottom: "75px" }}>
                         If you would like to contact us to understand more about this Policy or wish to contact us concerning
                         any matter relating to individual rights and your Personal Information, you may send an email to
-                        <a>academic360@hotmail.com</a>.
+                        <a href="#">academic360@hotmail.com</a>.
                     </div>
                 </div>
             </div>
