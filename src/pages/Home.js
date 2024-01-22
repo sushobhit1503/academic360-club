@@ -1,10 +1,10 @@
 import React from "react"
 import { Button, Card, CardBody, Input, Label } from "reactstrap"
 import { firestore } from "../config"
-import Image1 from "../assets/who-we-are-1.jpeg"
-import Image2 from "../assets/who-we-are-2.jpeg"
-import Mission from "../assets/mission.avif"
-import Contact from "../assets/contact.jpg"
+import Image1 from "../assets/who-we-are-1.webp"
+import Image2 from "../assets/who-we-are-2.webp"
+import Mission from "../assets/mission.webp"
+import Contact from "../assets/contact.webp"
 import firebase from "../config"
 import emailjs from "@emailjs/browser"
 
@@ -22,7 +22,7 @@ class Home extends React.Component {
         }
     }
     componentDidMount() {
-        localStorage.removeItem("success")   
+        localStorage.removeItem("success")
         const uid = localStorage.getItem("uid")
         if (uid) {
             firestore.collection("users").doc(uid).get().then(document => {
@@ -41,10 +41,11 @@ class Home extends React.Component {
             const { name, email, message, phoneNumber } = this.state
             if (phoneNumber.length !== 10) {
                 this.setState({ submitMessage: "Please enter a valid phone number", messageColor: "#DB4437" })
-
+                setTimeout(() => {
+                    this.setState({ submitMessage: "" })
+                }, 3000)
             }
-
-            if (!email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+            else if (!email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
                 this.setState({ submitMessage: "Please enter a valid email id", messageColor: "#DB4437" })
                 setTimeout(() => {
                     this.setState({ submitMessage: "" })
@@ -84,15 +85,17 @@ class Home extends React.Component {
         return (
             <div>
                 <div className="home-background mb-3">
-                    <div className="h1 text-secondary">
-                        ACADEMIC 360
+                    <div className="background-overlay">
+                        <div className="h1 text-secondary">
+                            ACADEMIC 360
+                        </div>
+                        <div className="h4 text-center text-primary">
+                            Your Gateway to Informed Education Abroad
+                        </div>
+                        <Button onClick={() => window.location.href = "/counselor-profiles"} className="bg-primary h5">
+                            Start Counselling
+                        </Button>
                     </div>
-                    <div className="h4 text-center text-primary">
-                        Your Gateway to Informed Education Abroad
-                    </div>
-                    <Button onClick={() => window.location.href = "/counselor-profiles"} className="bg-primary h5">
-                        Start Counselling
-                    </Button>
                 </div>
                 <div className="main-container mt-5">
                     <div className="row row-cols-1 row-cols-md-2 g-3">

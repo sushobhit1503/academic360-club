@@ -1,6 +1,6 @@
 import React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, NavbarText, Button } from 'reactstrap';
-import Logo from "../assets/logo.avif"
+import Logo from "../assets/logo.webp"
 import withRouter from "../components/withRouter"
 import { firestore } from "../config"
 
@@ -16,12 +16,16 @@ class Toolbar extends React.Component {
     }
     componentDidMount() {
         let activeClassBar = ""
-        let activeClassButton = ""
+        let activeClassButton = "bg-primary"
         if (window.location.href === "http://localhost:3000/" || window.location.href === "https://academic-360.netlify.app/") {
             window.addEventListener("scroll", () => {
                 if (window.scrollY >= 600) {
                     activeClassBar = "bg-primary toolbar-box-shadow"
                     activeClassButton = "bg-tertiary text-secondary"
+                }
+                if (window.scrollY === 0) {
+                    activeClassBar = ""
+                    activeClassButton = "bg-primary"
                 }
                 this.setState({ activeClassBar, activeClassButton })
             })

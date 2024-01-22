@@ -146,7 +146,7 @@ class Login extends React.Component {
                                     {this.state.otpHidden &&
                                         <div>
                                             <Button disabled={!this.state.phoneNumber || this.state.isLoading} id="otp-button" onClick={checkUserExist} className="button-submit bg-primary mb-3">
-                                                {this.state.isLoading ? <Spinner /> : "Get OTP"}
+                                                {this.state.isLoading ? "Loading ..." : "Get OTP"}
                                             </Button>
                                         </div>}
                                     {!this.state.otpHidden &&
@@ -191,7 +191,7 @@ class Login extends React.Component {
                                     {this.state.otpHidden &&
                                         <div>
                                             <Button disabled={!this.state.name || !this.state.email || !this.state.phoneNumber || this.state.isLoading} id="otp-buttton" onClick={checkUserExist} className="button-submit bg-primary mb-3">
-                                                {this.state.isLoading ? <Spinner /> : "Get OTP"}
+                                                {this.state.isLoading ? "Loading ..." : "Get OTP"}
                                             </Button>
                                         </div>}
                                     {!this.state.otpHidden &&

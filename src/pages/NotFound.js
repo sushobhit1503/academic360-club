@@ -1,5 +1,5 @@
 import React from "react"
-import NotFoundImage from "../assets/notfound.png"
+import NotFoundImage from "../assets/notfound.webp"
 
 class NotFound extends React.Component {
     render() {

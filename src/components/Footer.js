@@ -23,23 +23,25 @@ class Footer extends React.Component {
             if (!email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
                 this.setState({ submitMessage: "Please enter a valid email id", messageColor: "#DB4437" })
                 setTimeout(() => {
-                    this.setState({ submitMessage: "" })
+                    this.setState({ submitMessage: "", email: "" })
                 }, 3000)
             }
-            firestore.collection("newsletter").doc().set({
-                email: this.state.email,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                this.setState({ submitMessage: "You have been added to the subsribers list. Thank you for subscribing to our newsletters.", messageColor: "#0F9D58" })
-                setTimeout(() => {
-                    this.setState({ submitMessage: "" })
-                }, 3000)
-            }).catch(err => {
-                this.setState({ submitMessage: "Some error occurred. Please try again after sometime.", messageColor: "#DB4437" })
-                setTimeout(() => {
-                    this.setState({ submitMessage: "" })
-                }, 3000)
-            })
+            else {
+                firestore.collection("newsletter").doc().set({
+                    email: this.state.email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    this.setState({ submitMessage: "You have been added to the subsribers list. Thank you for subscribing to our newsletters.", messageColor: "#0F9D58" })
+                    setTimeout(() => {
+                        this.setState({ submitMessage: "" })
+                    }, 3000)
+                }).catch(err => {
+                    this.setState({ submitMessage: "Some error occurred. Please try again after sometime.", messageColor: "#DB4437" })
+                    setTimeout(() => {
+                        this.setState({ submitMessage: "" })
+                    }, 3000)
+                })
+            }
         }
         return (
             <div className="bg-secondary p-md-5 pb-0 pb-md-0 p-3">

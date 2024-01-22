@@ -1,9 +1,16 @@
 .home-background {
-    background-image: url("./assets/home-page-landing.avif");
+    background-image: url("./assets/home-page-landing.webp");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     min-height: 100vh;
+}
+
+.background-overlay {
+    background-color: rgba(0,0,0,0.4);
+    height: 100vh;
+    width: 100%;
+    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,7 +22,7 @@
 }
 
 .login-background {
-    background-image: url("./assets/login-page.jpeg");
+    background-image: url("./assets/login-page.webp");
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 100vh;
@@ -43,6 +50,10 @@
 
 .text-secondary {
     color: var(--blue) !important;
+}
+
+.text-tertiary {
+    color: var(--grey) !important;
 }
 
 .img-fluid {
@@ -131,7 +142,7 @@
     margin-top: 200px;
     background-size: contain;
     background-repeat: no-repeat;
-    background-image: url("./assets/who-we-are-1.jpeg");
+    background-image: url("./assets/who-we-are-1.webp");
 }
 
 .who-image-2 {
@@ -142,7 +153,7 @@
     background-position:bottom;
     background-size: contain;
     background-repeat: no-repeat;
-    background-image: url("./assets/who-we-are-2.jpeg");
+    background-image: url("./assets/who-we-are-2.webp");
 }
 
 .linkedin-icon {

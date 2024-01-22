@@ -26,7 +26,8 @@ class Appointment extends React.Component {
             couponMessage: "",
             couponColor: "",
             couponCode: "",
-            priceToPay: 0
+            priceToPay: 0,
+            isRedirect: false
         }
     }
     componentDidMount() {
@@ -55,34 +56,35 @@ class Appointment extends React.Component {
             })
             this.setState({ allCoupons: temp })
         })
-        firestore.collection("bookings").where("sessionId", "==", this.props.params.sessionId).get().then(Snapshot => {
-            let temp = []
-            Snapshot.forEach(document => {
-                temp.push(document.data())
-            })
-            this.setState({ bookedTimeSlots: temp })
-        })
         firestore.collection("sessions").doc(this.props.params.sessionId).get().then(document => {
             this.setState({ sessionDetails: document.data(), sessionId: this.props.params.sessionId, priceToPay: document.data().discountedPrice }, () => {
-                firestore.collection("timeslots").where("organiser", "==", this.state.sessionDetails.organiser).get().then(Snapshot => {
+                firestore.collection("bookings").where("organizerId", "==", this.state.sessionDetails.organiser).get().then(Snapshot => {
                     let temp = []
                     Snapshot.forEach(document => {
                         temp.push(document.data())
                     })
-                    this.setState({ allTimeSlots: temp }, () => {
-                        const availableTimeSlots = this.state.allTimeSlots.map((eachSlot) => {
-                            return {
-                                id: eachSlot.createdAt,
-                                startTime: new Date(eachSlot.startTime),
-                                endTime: new Date(eachSlot.endTime),
-                            };
-                        });
-                        const bookedSlotTimings = bookedSlots(this.state.bookedTimeSlots)
-                        const pendingSlotTimings = timeSlotDifference(availableTimeSlots, bookedSlotTimings)
-                        const finalSlotTimings = finalSlots(pendingSlotTimings, this.state.sessionDetails)
-                        this.setState({ availableTimeSlots: finalSlotTimings })
+                    this.setState({ bookedTimeSlots: temp }, () => {
+                        firestore.collection("timeslots").where("organiser", "==", this.state.sessionDetails.organiser).get().then(Snapshot => {
+                            let temp = []
+                            Snapshot.forEach(document => {
+                                temp.push(document.data())
+                            })
+                            this.setState({ allTimeSlots: temp }, () => {
+                                const availableTimeSlots = this.state.allTimeSlots.map((eachSlot) => {
+                                    return {
+                                        id: eachSlot.createdAt,
+                                        startTime: new Date(eachSlot.startTime),
+                                        endTime: new Date(eachSlot.endTime),
+                                    };
+                                });
+                                const bookedSlotTimings = bookedSlots(this.state.bookedTimeSlots)
+                                const pendingSlotTimings = timeSlotDifference(availableTimeSlots, bookedSlotTimings)
+                                const finalSlotTimings = finalSlots(pendingSlotTimings, this.state.sessionDetails)
+                                this.setState({ availableTimeSlots: finalSlotTimings })
+                            })
+                        }).catch(err => console.log(err.message))
                     })
-                }).catch(err => console.log(err.message))
+                })
             })
         }).catch(err => console.log(err.message))
 
@@ -104,12 +106,14 @@ class Appointment extends React.Component {
                 //   callback_url: "https://academics360.club/",
                 handler: function async(response) {
                     console.log(response);
+                    setRedirect()
                     firestore.collection("bookings").doc().set({
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         paymentId: response.razorpay_payment_id,
                         userId: localStorage.getItem("uid"),
                         sessionId: sessionId,
                         bookingTime: selectedDate.startTime.toISOString(),
+                        organizerId: sessionDetails.organiser,
                         sessionTime: parseInt(sessionDetails.time)
                     }).then(() => {
                         firestore.collection("coupons").where("code", "==", couponCode).get().then(Snapshot => {
@@ -125,7 +129,7 @@ class Appointment extends React.Component {
                             subject: "Appointment Booking Confirmation | Academics360",
                             reply_to: "official.academic360@gmail.com",
                             organiser: allCounselors.find(x => x.id === sessionDetails.organiser).data?.name,
-                            time: JSON.stringify(selectedDate),
+                            time: selectedDate.startTime.toString(),
                             location: sessionDetails.link
                         }
                         emailjs.send('service_w2cbgtf', 'template_oevwn69', templateParams, 'x0yoXZhLLLAmkfimK')
@@ -157,6 +161,9 @@ class Appointment extends React.Component {
                 document.body.appendChild(script);
             });
         };
+        const setRedirect = () => {
+            this.setState ({isRedirect: true})
+        }
         const onChange = (e) => {
             const { name, value } = e.target
             this.setState({ [name]: value })
@@ -179,6 +186,7 @@ class Appointment extends React.Component {
         }
         return (
             <div className="page-start">
+                {!this.state.isRedirect && 
                 <div className="main-container">
                     <div className="row row-cols-1 row-cols-md-2 g-5 my-md-5 mt-3 mb-5">
                         <div className="col-12 col-md-7">
@@ -268,7 +276,12 @@ class Appointment extends React.Component {
                             </Card>
                         </div>
                     </div>
-                </div>
+                </div>}
+                {this.state.isRedirect && 
+                <div className="text-center page-start">
+                    <div className="h3">Booking Successful !!</div>
+                    <div className="mb-3">Redirecting to Confirmation Page</div>
+                </div>}
             </div>
         )
     }
