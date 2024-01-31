@@ -8,6 +8,7 @@ import emailjs from "@emailjs/browser"
 import Moment from "react-moment";
 import { bookedSlots, finalSlots } from "../util/bookedSlots";
 import { checkValidity } from "../util/checkCoupon";
+import Skeleton from "react-loading-skeleton";
 
 class Appointment extends React.Component {
     constructor() {
@@ -27,7 +28,8 @@ class Appointment extends React.Component {
             couponColor: "",
             couponCode: "",
             priceToPay: 0,
-            isRedirect: false
+            isRedirect: false,
+            isLoading: true
         }
     }
     componentDidMount() {
@@ -78,9 +80,11 @@ class Appointment extends React.Component {
                                     };
                                 });
                                 const bookedSlotTimings = bookedSlots(this.state.bookedTimeSlots)
+                                console.log(availableTimeSlots)
+                                console.log(bookedSlotTimings)
                                 const pendingSlotTimings = timeSlotDifference(availableTimeSlots, bookedSlotTimings)
                                 const finalSlotTimings = finalSlots(pendingSlotTimings, this.state.sessionDetails)
-                                this.setState({ availableTimeSlots: finalSlotTimings })
+                                this.setState({ availableTimeSlots: finalSlotTimings, isLoading: false })
                             })
                         }).catch(err => console.log(err.message))
                     })
@@ -191,6 +195,7 @@ class Appointment extends React.Component {
                     <div className="row row-cols-1 row-cols-md-2 g-5 my-md-5 mt-3 mb-5">
                         <div className="col-12 col-md-7">
                             <div className="h5 ms-3">Schedule your appointment</div>
+                            {this.state.isLoading ? <Skeleton height={300} /> :
                             <ScheduleMeeting
                                 borderRadius={10}
                                 primaryColor="#052778"
@@ -198,7 +203,7 @@ class Appointment extends React.Component {
                                 availableTimeslots={this.state.availableTimeSlots}
                                 onStartTimeSelect={(object) => this.setState({ selectedDate: object },
                                     () => console.log(this.state.selectedDate))}
-                            />
+                            />}
                         </div>
                         <div className="col-12 col-md-5">
                             <Card>
