@@ -15,8 +15,11 @@ class Counselor extends React.Component {
         return (
             <Card>
                 <CardBody className="text-center">
-                    {!this.props.profilePicture && <img src={ProfilePlaceholder} className="mb-3 counselor-picture" alt="profile" />}
-                    {this.props.profilePicture && <img src={this.props.profilePicture} className="mb-3 counselor-picture" alt="profile" />}
+                    {!this.props.profilePicture && <img src={ProfilePlaceholder} className="mb-3 counselor-picture" alt="" />}
+                    {this.props.profilePicture && <div>
+                        <img src={ProfilePlaceholder} className="mb-3 counselor-picture" alt="" />
+                        <img src={this.props.profilePicture} className="mb-3 counselor-picture" alt="" style={{position: "absolute", marginLeft: "-250px"}} />
+                    </div>}
                     <div className="h5">{this.props.name}</div>
                     <div className="d-flex gap-3 justify-content-center">
                         <Badge color="warning">

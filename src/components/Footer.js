@@ -59,7 +59,7 @@ class Footer extends React.Component {
                     </div>
                     <div className="col mb-5">
                         <div className="h3 mb-3">Follow our Instagram Channel</div>
-                        <a className="footer-social-media" href="https://www.instagram.com/academic360/"><i className="fa fa-instagram"></i></a>
+                        <a target="_blank" rel="noreferrer" className="footer-social-media" href="https://www.instagram.com/academic360/"><i className="fa fa-instagram"></i></a>
                     </div>
                     <div className="col mb-5">
                         <div className="h3 mb-3">Some Important Links</div>
