@@ -6,6 +6,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+To clone the repository:
+1. Go to the terminal.
+2. Make sure u have git installed in your system (https://git-scm.com/downloads)
+3. Then go to the desired directory
+4. Type git clone https://github.com/sushobhit1503/academics360.git
+
 ### `npm start`
 
 Check if there is a folder called "Node Modules". If not present, first enter this command npm install --force
