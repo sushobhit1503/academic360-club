@@ -1,7 +1,6 @@
 import React from "react";
 import { firestore } from "../config";
-import firebase from "../config";
-import { Input, Table, Card, CardBody, Label } from "reactstrap";
+import { Table, Card, CardBody, Label } from "reactstrap";
 import Moment from "react-moment";
 
 class Bookings extends React.Component {
@@ -97,10 +96,10 @@ class Bookings extends React.Component {
                                 return (
                                     <tr key={eachUser.paymentId}>
                                         <th scope="row">
-                                            {this.state.allUsers.find(x => x.id === eachUser.data?.userId).data?.name}
+                                            {this.state.allUsers?.find(x => x.id === eachUser.data?.userId).data?.name}
                                         </th>
                                         <td>
-                                            {this.state.allSessions.find(x => x.id === eachUser.data?.sessionId).data?.name}
+                                            {this.state.allSessions?.find(x => x.id === eachUser.data?.sessionId).data?.name}
                                         </td>
                                         <td>
                                             <Moment format="DD-MM-YYYY HH:mm">
@@ -129,10 +128,10 @@ class Bookings extends React.Component {
                         return (
                             <Card className="mb-3">
                                 <CardBody>
-                                    <div className="h3 mb-3">{this.state.allSessions.find(x => x.id === eachUser.data?.sessionId).data?.name}</div>
+                                    <div className="h3 mb-3">{this.state.allSessions?.find(x => x.id === eachUser.data?.sessionId).data?.name}</div>
                                     <div className="mb-3">
                                         <Label className="mb-0">Session Name</Label>
-                                        <div className="fw-bold">{this.state.allSessions.find(x => x.id === eachUser.data?.sessionId).data?.name}</div>
+                                        <div className="fw-bold">{this.state.allSessions?.find(x => x.id === eachUser.data?.sessionId).data?.name}</div>
                                     </div>
                                     <div className="d-flex justify-content-between mb-3">
                                         <div>
