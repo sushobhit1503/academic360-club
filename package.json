@@ -1,5 +1,6 @@
 {
   "name": "academics360",
+  "homepage": "https://academic360.club/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
