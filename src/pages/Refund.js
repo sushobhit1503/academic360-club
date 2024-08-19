@@ -3,7 +3,7 @@ import React from "react"
 class Refund extends React.Component {
     render() {
         return (
-            <div style={{paddingTop:"120px"}} className="main-container">
+            <div style={{ paddingTop: "120px" }} className="main-container">
                 <div className="h2 mb-3">Returns & Refunds policy</div>
                 <div className="mb-3">
                     At Academic 360, we strive to provide the best possible experience for our users,
@@ -15,11 +15,11 @@ class Refund extends React.Component {
                 </div>
                 <div className="mb-3">1.1. The convenience fees charged by the platform is non-refundable.</div>
                 <div className="h3 mb-3">
-                    Service Fees:
+                    Session Fees:
                 </div>
                 <div className="mb-3">
-                    2.1 If a user cancels an order midway, the refund will be dependent upon the amount of work done
-                    by the counselor at the time of cancellation. <br /> <br />
+                    2.1 If a user wants to cancel their booking within 6 hours of the time of booking and the session has not been conducted,
+                    50% of the amount would be refunded to the user using the original payment method wherever possible <br /> <br />
                     To use the Marketplace, you must create a user account. You are responsible for maintaining
                     the confidentiality of your account and password, and for restricting access to your computer.
                     You agree to accept responsibility for all activities that occur under your account.
@@ -35,14 +35,12 @@ class Refund extends React.Component {
                 <div className="h3 mb-3">
                     Please note the following important points:
                 </div>
-                <div style={{marginBottom: "75px"}}>
-                    Refunds will be processed using the original payment method whenever possible.
-                    Refunds may take up to 5-10 business days to be processed and reflected in the user's account
-                    after the amount to be refunded is decided. <br /> <br />
-                    Academic 360 reserves the right to modify this refund policy at any time.
-                    Any changes or updates will be communicated to users via email or through our platform.. <br /><br />
-                    If you have any questions or require further clarification regarding our refund policy,
-                    please don't hesitate to contact our support team at <a>academic360@hotmail.com</a>.<br /><br />
+                <div style={{ marginBottom: "75px" }}>
+                    1. Refunds will be processed using the original payment method within 5-10 business days, once approved. It will be credited to the original payment method within 5-10 business days after processing the refund. <br />
+                    2. Users are not eligible for a refund once the session is already conducted. <br />
+                    3. Users can cancel their booking within 6 hours of the time of booking and the session must not be within 24 hours at the time of cancellation to be eligible for a refund <br />
+                    4. Academic 360 reserves the right to modify this refund policy at any time. Any changes or updates will be communicated to users via email or through our platform <br />
+                    5. If you have any questions or require further clarification regarding our refund policy, please don't hesitate to contact our support team at official.academic360@gmail.com
                     Thank you for being a part of the Academic 360 community. <br /><br />
                     Best regards,
                     Academic 360 Team

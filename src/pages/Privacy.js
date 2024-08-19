@@ -43,7 +43,7 @@ class Privacy extends React.Component {
                         telephone number. You can choose not to provide us with your personal data, but then you may not be able to take
                         advantage of some of the website’s features. For example, you won’t be able to receive our Newsletter or
                         contact us directly from the website. Users who are uncertain about what information is mandatory are welcome
-                        to contact us via academic360@hotmail.com.
+                        to contact us via official.academic360@gmail.com.
                     </div>
                     <div className="h5 mb-3">
                         Your rights:
@@ -100,7 +100,7 @@ class Privacy extends React.Component {
                     <div style={{ marginBottom: "75px" }}>
                         If you would like to contact us to understand more about this Policy or wish to contact us concerning
                         any matter relating to individual rights and your Personal Information, you may send an email to
-                        <a href="#">academic360@hotmail.com</a>.
+                        <a href="#">official.academic360@gmail.com</a>.
                     </div>
                 </div>
             </div>
