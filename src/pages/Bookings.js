@@ -92,25 +92,26 @@ class Bookings extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.allBookings.map(eachUser => {
+                            {this.state.allBookings.length !== 0 && this.state.allBookings.map(eachUser => {
+                                console.log (this.state.allUsers)
                                 return (
                                     <tr key={eachUser.paymentId}>
                                         <th scope="row">
-                                            {this.state.allUsers?.find(x => x.id === eachUser.data?.userId).data?.name}
+                                            {this.state.allUsers?.find(x => x.id === eachUser?.data?.userId).data?.name}
                                         </th>
                                         <td>
-                                            {this.state.allSessions?.find(x => x.id === eachUser.data?.sessionId).data?.name}
+                                            {this.state.allSessions?.find(x => x.id === eachUser?.data?.sessionId).data?.name}
                                         </td>
                                         <td>
                                             <Moment format="DD-MM-YYYY HH:mm">
-                                                {eachUser.data.bookingTime}
+                                                {eachUser.data?.bookingTime}
                                             </Moment>
                                         </td>
                                         <td>
-                                            {eachUser.data.sessionTime}
+                                            {eachUser.data?.sessionTime}
                                         </td>
                                         <td>
-                                            {eachUser.data.paymentId}
+                                            {eachUser.data?.paymentId}
                                         </td>
                                     </tr>
                                 )
@@ -138,18 +139,18 @@ class Bookings extends React.Component {
                                             <Label className="mb-0">Booking Time</Label>
                                             <div className="fw-bold">
                                                 <Moment format="DD-MM-YYYY HH:mm">
-                                                    {eachUser.data.bookingTime}
+                                                    {eachUser.data?.bookingTime}
                                                 </Moment>
                                             </div>
                                         </div>
                                         <div>
                                             <Label className="mb-0">Duration (mins)</Label>
-                                            <div className="fw-bold">{eachUser.data.sessionTime}</div>
+                                            <div className="fw-bold">{eachUser.data?.sessionTime}</div>
                                         </div>
                                     </div>
                                     <div className="mb-3">
                                         <Label className="mb-0">Payment Id</Label>
-                                        <div className="fw-bold">{eachUser.data.paymentId}</div>
+                                        <div className="fw-bold">{eachUser.data?.paymentId}</div>
                                     </div>
                                 </CardBody>
                             </Card>
