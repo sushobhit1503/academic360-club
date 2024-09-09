@@ -45,7 +45,7 @@ class Footer extends React.Component {
         }
         return (
             <div className="bg-secondary p-md-5 pb-0 pb-md-0 p-3">
-                <div className="row row-cols-1 row-col-md-2 row-cols-xl-3">
+                <div className="row row-cols-1 row-col-md-2 row-cols-xl-3 mb-3">
                     <div className="col mb-5">
                         <div className="h3 mb-5">Subscribe to our newsletter</div>
                         <Label>Email Address</Label>
@@ -73,6 +73,10 @@ class Footer extends React.Component {
                             <a className="footer-links" href="/terms">Terms and Conditions</a>
                         </div>
                     </div>
+                </div>
+                <div className="text-center pb-5">
+                    <div>Operated and Managed by RISHABH INTERNATIONAL</div>
+                    <div>GSTIN: 06BBZPJ9237K1ZS</div>
                 </div>
             </div>
 

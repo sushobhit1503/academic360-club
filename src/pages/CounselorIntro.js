@@ -76,6 +76,7 @@ const CounselorIntro = () => {
                 {isSessionLoading ? <Skeleton height={30} /> :
                     <div className="row row-cols-1 row-cols-md-3 g-3">
                         {sessions.map(eachSession => {
+                            if (!eachSession.data?.isDisabled)
                             return (
                                 <div className="col" key={eachSession.id}>
                                     <Session name={eachSession.data.name}

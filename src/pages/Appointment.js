@@ -101,7 +101,7 @@ class Appointment extends React.Component {
             if (!res) return;
             const { userDetails, sessionId, selectedDate, sessionDetails, allCounselors, couponCode } = this.state
             const options = {
-                key: "rzp_test_RzYQGECWiji4Ln", // change when making live
+                key: "rzp_live_Dm0ZfmuDH1NBOK", // change when making live
                 currency: "INR",
                 amount: (parseInt(this.state.priceToPay) + 99) * 100,
                 name: "Academics 360",
